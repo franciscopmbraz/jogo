@@ -11,7 +11,6 @@ import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
-import jogo.appstate.PlayerAppState;
 import jogo.gameobject.character.Player;
 
 public class InputAppState extends BaseAppState implements ActionListener, AnalogListener {
@@ -125,8 +124,11 @@ public class InputAppState extends BaseAppState implements ActionListener, Analo
                 if (isPressed) setMouseCaptured(!mouseCaptured);
             }
             case "Break" -> {
-                if (isPressed && mouseCaptured) breakRequested = true;
+                if (mouseCaptured) {
+                    breakRequested = isPressed;        // TRUE enquanto o botão estiver carregado
+                }
             }
+
             case "Place" -> {
                 if (isPressed && mouseCaptured) placeRequested = true;
             }
@@ -190,6 +192,10 @@ public class InputAppState extends BaseAppState implements ActionListener, Analo
         breakRequested = false;
         return r;
     }
+    public boolean isBreakingHeld() {
+        return breakRequested;
+    }
+
 
     public boolean consumePlaceRequested() {
         boolean r = placeRequested;

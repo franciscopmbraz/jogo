@@ -14,8 +14,6 @@ import jogo.gameobject.item.BlockItem;
 import jogo.util.Hit;
 import jogo.util.ProcTextures;
 import jogo.gameobject.item.Inventory;
-import jogo.gameobject.item.SimpleItem;
-import jogo.voxel.VoxelBlockType;
 
 import java.util.*;
 

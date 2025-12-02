@@ -17,6 +17,9 @@ import jogo.gameobject.character.Player;
 import jogo.gameobject.item.BlockItem;
 import jogo.gameobject.item.Inventory;
 import jogo.gameobject.item.ItemStack;
+import jogo.gameobject.item.Item;
+import jogo.gameobject.item.PickaxeItem;
+
 
 
 public class WorldAppState extends BaseAppState {
@@ -32,6 +35,9 @@ public class WorldAppState extends BaseAppState {
     private Node worldNode;
     private VoxelWorld voxelWorld;
     private com.jme3.math.Vector3f spawnPosition;
+
+    private VoxelWorld.Vector3i breakingCell = null;
+    private float breakingProgress = 0f;
 
     public WorldAppState(Node rootNode, AssetManager assetManager, PhysicsSpace physicsSpace, Camera cam, InputAppState input) {
         this.rootNode = rootNode;
@@ -83,16 +89,63 @@ public class WorldAppState extends BaseAppState {
 
     @Override
     public void update(float tpf) {
-        if (input != null && input.isMouseCaptured() && input.consumeBreakRequested()) {
+        if (input != null && input.isMouseCaptured() && input.isBreakingHeld()) {
+
+            // (terias de adaptar isBreakingHeld() ou usar um flag de "está a segurar")
             var pick = voxelWorld.pickFirstSolid(cam, 6f);
+            if (pick.isEmpty()) {
+                breakingCell = null;
+                breakingProgress = 0f;
+                return;
+            }
+
             pick.ifPresent(hit -> {
                 VoxelWorld.Vector3i cell = hit.cell;
-                if (voxelWorld.breakAt(cell.x, cell.y, cell.z)) {
+
+                if (breakingCell == null || cell.x != breakingCell.x || cell.y != breakingCell.y || cell.z != breakingCell.z) {
+                    // novo bloco → reset progress
+                    System.out.println("breakingCellReset");
+                    breakingCell = cell;
+                    breakingProgress = 0f;
+                }
+
+                // velocidade base
+                float baseSpeed = 1.0f;
+
+                // ver item na mão
+                Inventory inv = playerAppState.getPlayer().getInventory();
+                ItemStack hand = inv.getSelectedStack();
+                float toolMult = 1.0f;
+
+                if (hand != null && !hand.isEmpty()) {
+                    Item item = hand.getItem();
+                    if (item instanceof PickaxeItem pickaxe) {
+                        toolMult = pickaxe.getSpeedMultiplier();
+                    }
+                }
+
+                breakingProgress += tpf * baseSpeed * toolMult;
+
+                float timeToBreak = 0.2f; // 1 segundo com toolMult = 1
+
+                if (breakingProgress >= timeToBreak) {
+                    System.out.println("Breaking at");
+                    voxelWorld.breakAt(cell.x, cell.y, cell.z);
                     voxelWorld.rebuildDirtyChunks(physicsSpace);
                     playerAppState.refreshPhysics();
+                    breakingProgress = 0f;
+                    breakingCell = null;
                 }
+
             });
+
+        } else {
+            // botão não está a ser mantido → reset
+            breakingCell = null;
+            breakingProgress = 0f;
         }
+
+
         if (input != null && input.isMouseCaptured() && input.consumePlaceRequested()) {
             var pick = voxelWorld.pickFirstSolid(cam, 6f);
             pick.ifPresent(hit -> {

@@ -4,12 +4,13 @@ import jogo.gameobject.item.BlockItem;
 import jogo.gameobject.item.Inventory;
 import jogo.gameobject.item.Item;
 import jogo.gameobject.item.SimpleItem;
+import jogo.gameobject.item.PickaxeItemStone;
+import jogo.gameobject.item.PickaxeItemWood;
 import jogo.voxel.VoxelPalette;
 
 public class Craft {
 
     // TODAS AS RECEITAS DO JOGO
-    // Troca os nomes conforme o que tens no teu jogo.
     private static final Recipe[] RECIPES = new Recipe[] {
 
 
@@ -28,14 +29,14 @@ public class Craft {
                     }
             ),
             new Recipe(
-                    "picareta p", 1,
+                    "picaretap", 1,
                     new Recipe.Ingredient[] {
                             new Recipe.Ingredient("pedra", 3),
                             new Recipe.Ingredient("pau", 2)
                     }
             ),
             new Recipe(
-                    "picareta m", 1,
+                    "picaretam", 1,
                     new Recipe.Ingredient[] {
                             new Recipe.Ingredient("troncop", 3),
                             new Recipe.Ingredient("pau", 2)
@@ -58,25 +59,24 @@ public class Craft {
     }
 
     public static boolean craft(Inventory inv, Recipe recipe) {
-        // Verificar materiais
         if (!canCraft(inv, recipe)) return false;
 
-        // Remover ingredientes
         for (Recipe.Ingredient ing : recipe.getIngredients()) {
-            boolean ok = inv.removeItem(ing.getItemName(), ing.getAmount());
-            if (!ok) return false;
+            if (!inv.removeItem(ing.getItemName(), ing.getAmount())) {
+                return false;
+            }
         }
 
         Item resultItem;
-
         String name = recipe.getResultName();
 
         if (name.equals("troncop")) {
-            // aqui usas o ID de bloco certo para o troncop na tua paleta
-            // TROCA VoxelPalette.WOOD_ID pelo ID correto do bloco "troncop"
             resultItem = new BlockItem("troncop", VoxelPalette.WOODPLANK_ID);
+        } else if (name.equals("picaretap")) {
+            resultItem = new PickaxeItemStone();
+        } else if (name.equals("picareta m")) {
+            resultItem = new PickaxeItemWood();
         } else {
-            // restantes receitas: items normais
             resultItem = new SimpleItem(name);
         }
 

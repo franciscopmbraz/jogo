@@ -69,6 +69,7 @@ public class WorldAppState extends BaseAppState {
         voxelWorld.buildPhysics(physicsSpace);
         // compute recommended spawn
         spawnPosition = voxelWorld.getRecommendedSpawn();
+
     }
 
     public com.jme3.math.Vector3f getRecommendedSpawnPosition() {

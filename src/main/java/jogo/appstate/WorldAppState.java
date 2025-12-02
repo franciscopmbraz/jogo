@@ -129,7 +129,6 @@ public class WorldAppState extends BaseAppState {
                 float timeToBreak = 0.2f; // 1 segundo com toolMult = 1
 
                 if (breakingProgress >= timeToBreak) {
-                    System.out.println("Breaking at");
                     voxelWorld.breakAt(cell.x, cell.y, cell.z);
                     voxelWorld.rebuildDirtyChunks(physicsSpace);
                     playerAppState.refreshPhysics();

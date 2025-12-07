@@ -118,10 +118,10 @@ public class PlayerAppState extends BaseAppState {
             pitch = FastMath.clamp(pitch, -FastMath.HALF_PI * 0.99f, FastMath.HALF_PI * 0.99f);
         }
 
-        // a) Definir velocidade base
+        // Definir velocidade base
         float currentMoveSpeed = moveSpeed;
 
-        // b) Verificar bloco no chão
+        // Verificar bloco no chão
         Vector3f pos = playerNode.getWorldTranslation();
         int x = (int) Math.floor(pos.x);
         int y = (int) Math.floor(pos.y - 0.2f);
@@ -135,14 +135,14 @@ public class PlayerAppState extends BaseAppState {
             }
         }
 
-        // c) Calcular direção (O código que perguntaste se podias apagar está aqui dentro)
+
         Vector3f wish = input.getMovementXZ();
         Vector3f dir = Vector3f.ZERO;
         if (wish.lengthSquared() > 0f) {
             dir = computeWorldMove(wish).normalizeLocal();
         }
 
-        // d) Aplicar movimento com a NOVA velocidade (currentMoveSpeed)
+       //movimento com a NOVA velocidade (currentMoveSpeed)
         float speed = currentMoveSpeed * (input.isSprinting() ? sprintMultiplier : 1f);
         characterControl.setWalkDirection(dir.mult(speed));
         // jump

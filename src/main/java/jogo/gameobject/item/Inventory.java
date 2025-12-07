@@ -4,14 +4,14 @@ public class Inventory {
 
     public static final int HOTBAR_SIZE = 9;      // 9 slots hotbar (1–9)
 
-    private static final Inventory GLOBAL_INVENTORY = new Inventory();
+    private static final Inventory INVENTORY = new Inventory();
 
     public static Inventory getGlobalInventory() {
-        return GLOBAL_INVENTORY;
+        return INVENTORY;
     }
 
     public static void addToGlobal(Item item, int amount) {
-        GLOBAL_INVENTORY.addItem(item, amount);
+        INVENTORY.addItem(item, amount);
     }
 
     private final ItemStack[] slots = new ItemStack[HOTBAR_SIZE];

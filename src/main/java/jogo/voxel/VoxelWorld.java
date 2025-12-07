@@ -98,15 +98,22 @@ public class VoxelWorld {
         if (!inBounds(x,y,z)) return false;
         byte id  = getBlock(x,y,z);
         VoxelBlockType type = palette.get(id);
+
         if( type  instanceof UnbreakableType) return false;
-        String nome = null;
-        byte dropId = type.getDropId();
-        if (dropId != VoxelPalette.AIR_ID) {
-            nome= palette.get(dropId).getName();
-        }
         setBlock(x, y, z, VoxelPalette.AIR_ID);
-        if(nome != null) {
-            Inventory.addToGlobal(new BlockItem(nome, dropId), 1);
+
+        //Tenta obter um drop personalizado
+        jogo.gameobject.item.Item customDrop = type.getCustomDrop();
+
+        if (customDrop != null) {
+            Inventory.addToGlobal(customDrop, 1);
+        } else {
+            // 3. Lógica antiga (para pedra, madeira, etc.)
+            byte dropId = type.getDropId();
+            if (dropId != VoxelPalette.AIR_ID) {
+                String nome = palette.get(dropId).getName();
+                Inventory.addToGlobal(new BlockItem(nome, dropId), 1);
+            }
         }
         return true;
 

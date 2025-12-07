@@ -6,6 +6,8 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.texture.Texture;
 import jogo.voxel.VoxelBlockType;
 import jogo.voxel.VoxelPalette;
+import jogo.gameobject.item.CenouraItem;
+import jogo.gameobject.item.Item;
 
 public class LeavesBlockType extends VoxelBlockType {
     public LeavesBlockType() {super(VoxelPalette.LEAVES_ID,"folha");
@@ -26,7 +28,8 @@ public class LeavesBlockType extends VoxelBlockType {
     }
 
     @Override
-    public byte getDropId() {
-        return VoxelPalette.AIR_ID;
+    public jogo.gameobject.item.Item getCustomDrop() {
+        return new jogo.gameobject.item.CenouraItem();
     }
+
 }

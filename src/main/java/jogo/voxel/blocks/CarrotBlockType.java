@@ -27,7 +27,7 @@ public class CarrotBlockType extends VoxelBlockType {
 
     @Override
     public jogo.gameobject.item.Item getCustomDrop() {
-        return new jogo.gameobject.item.CenouraItem();
+        return new jogo.gameobject.item.CenouraItem(5);
     }
 
 

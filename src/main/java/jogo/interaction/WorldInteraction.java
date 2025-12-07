@@ -17,7 +17,7 @@ public class WorldInteraction {
         Inventory inv = Inventory.getGlobalInventory(); //
         ItemStack stack = inv.getSelectedStack();       //
 
-        // Regra 1: Transformar Relva em Lavoura (Funciona sem item específico por enquanto)
+        // Transformar Relva em Lavoura
         if (idAtual == VoxelPalette.GRASS_ID || idAtual == VoxelPalette.DIRT_ID) {
             vw.setBlock(cell.x, cell.y, cell.z, VoxelPalette.TILLED_ID);
 
@@ -40,7 +40,7 @@ public class WorldInteraction {
                     vw.setBlock(cell.x, cell.y, cell.z, VoxelPalette.CARROT_ID);
 
                     // Consome 1 item do stack da mão
-                    stack.remove(1); //
+                    stack.remove(1);
 
                     // Atualiza o mundo
                     if (physicsSpace != null) {

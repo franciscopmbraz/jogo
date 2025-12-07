@@ -52,15 +52,15 @@ public class HudAppState extends BaseAppState {
 
         // Aparece a hotbar
 
-        float slotWidth = 80f;   // antes 60f — mais espaço horizontal
-        float spacing   = 20f;    // antes 10f — mais espaço entre slots
+        float slotWidth = 80f;
+        float spacing   = 20f;
         float totalWidth = HOTBAR_SLOTS * slotWidth + (HOTBAR_SLOTS - 1) * spacing;
         float startX = (screenWidth - totalWidth) / 2f;
         float yHotbar = 40f; // distância do fundo
 
         for (int i = 0; i < HOTBAR_SLOTS; i++) {
             BitmapText txt = new BitmapText(font, false);
-            txt.setSize(18f); // se ainda estiver muito apertado, podes baixar para 16f
+            txt.setSize(14f);
             txt.setLocalTranslation(startX + i * (slotWidth + spacing), yHotbar, 0);
             guiNode.attachChild(txt);
             hotbarTexts[i] = txt;

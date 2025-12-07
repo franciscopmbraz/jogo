@@ -103,8 +103,6 @@ public class WorldAppState extends BaseAppState {
                 VoxelWorld.Vector3i cell = hit.cell;
 
                 if (breakingCell == null || cell.x != breakingCell.x || cell.y != breakingCell.y || cell.z != breakingCell.z) {
-                    // novo bloco → reset progress
-                    System.out.println("breakingCellReset");
                     breakingCell = cell;
                     breakingProgress = 0f;
                 }
@@ -126,7 +124,7 @@ public class WorldAppState extends BaseAppState {
 
                 breakingProgress += tpf * baseSpeed * toolMult;
 
-                float timeToBreak = 0.2f; // 1 segundo com toolMult = 1
+                float timeToBreak = 0.5f; // 1 segundo com toolMult = 1
 
                 if (breakingProgress >= timeToBreak) {
                     voxelWorld.breakAt(cell.x, cell.y, cell.z);

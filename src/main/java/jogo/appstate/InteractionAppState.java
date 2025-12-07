@@ -70,8 +70,6 @@ public class InteractionAppState extends BaseAppState {
                     physicsSpace = bulletState.getPhysicsSpace();
                 }
 
-                // CHAMADA À NOVA CLASSE - Muito mais limpo!
-                // Passamos o mundo, a célula onde acertámos e o espaço físico
                 WorldInteraction.interactWithBlock(vw, hit.cell, physicsSpace);
             });
         }

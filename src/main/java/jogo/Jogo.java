@@ -70,9 +70,9 @@ public class Jogo extends SimpleApplication {
 
         PlayerAppState player = new PlayerAppState(rootNode, assetManager, cam, input, physicsSpace, world);
         stateManager.attach(player);
-        EnemyAppState enemyState = new EnemyAppState(rootNode, registry, physicsSpace, player);
+        EnemyAppState enemyState = new EnemyAppState(rootNode, registry, physicsSpace, player,world);
         stateManager.attach(enemyState);
-        
+
 
         // Post-processing: SSAO for subtle contact shadows
         try {

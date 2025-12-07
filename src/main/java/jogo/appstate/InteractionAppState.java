@@ -2,6 +2,8 @@ package jogo.appstate;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
+import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.PhysicsSpace;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
@@ -12,6 +14,7 @@ import jogo.engine.RenderIndex;
 import jogo.gameobject.GameObject;
 import jogo.gameobject.item.Item;
 import jogo.voxel.VoxelWorld;
+import jogo.interaction.WorldInteraction;
 
 public class InteractionAppState extends BaseAppState {
 
@@ -58,10 +61,20 @@ public class InteractionAppState extends BaseAppState {
 
         // 2) If no item hit, consider voxel block under crosshair (exercise for students)
         VoxelWorld vw = world != null ? world.getVoxelWorld() : null;
-        vw.pickFirstSolid(cam, reach).ifPresent(hit -> {
-            VoxelWorld.Vector3i cell = hit.cell;
-            System.out.println("TODO (exercise): interact with voxel at " + cell.x + "," + cell.y + "," + cell.z);
-        });
+        if (vw != null) {
+            vw.pickFirstSolid(cam, reach).ifPresent(hit -> {
+                // Vamos buscar o PhysicsSpace para poder atualizar os chunks
+                PhysicsSpace physicsSpace = null;
+                BulletAppState bulletState = getApplication().getStateManager().getState(BulletAppState.class);
+                if (bulletState != null) {
+                    physicsSpace = bulletState.getPhysicsSpace();
+                }
+
+                // CHAMADA À NOVA CLASSE - Muito mais limpo!
+                // Passamos o mundo, a célula onde acertámos e o espaço físico
+                WorldInteraction.interactWithBlock(vw, hit.cell, physicsSpace);
+            });
+        }
     }
 
     private GameObject findRegistered(Spatial s) {

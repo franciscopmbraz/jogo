@@ -12,6 +12,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 import jogo.gameobject.character.Player;
+import jogo.voxel.VoxelPalette;
 
 public class PlayerAppState extends BaseAppState {
 
@@ -117,15 +118,33 @@ public class PlayerAppState extends BaseAppState {
             pitch = FastMath.clamp(pitch, -FastMath.HALF_PI * 0.99f, FastMath.HALF_PI * 0.99f);
         }
 
-        // movement input in XZ plane based on camera yaw
+        // a) Definir velocidade base
+        float currentMoveSpeed = moveSpeed;
+
+        // b) Verificar bloco no chão
+        Vector3f pos = playerNode.getWorldTranslation();
+        int x = (int) Math.floor(pos.x);
+        int y = (int) Math.floor(pos.y - 0.2f);
+        int z = (int) Math.floor(pos.z);
+
+        if (world != null) {
+            byte blockId = world.getVoxelWorld().getBlock(x, y, z);
+            // Se for Speed block, reduz a velocidade
+            if (blockId == VoxelPalette.SPEED_ID) {
+                currentMoveSpeed = moveSpeed * 0.5f;
+            }
+        }
+
+        // c) Calcular direção (O código que perguntaste se podias apagar está aqui dentro)
         Vector3f wish = input.getMovementXZ();
         Vector3f dir = Vector3f.ZERO;
         if (wish.lengthSquared() > 0f) {
             dir = computeWorldMove(wish).normalizeLocal();
         }
-        float speed = moveSpeed * (input.isSprinting() ? sprintMultiplier : 1f);
-        characterControl.setWalkDirection(dir.mult(speed));
 
+        // d) Aplicar movimento com a NOVA velocidade (currentMoveSpeed)
+        float speed = currentMoveSpeed * (input.isSprinting() ? sprintMultiplier : 1f);
+        characterControl.setWalkDirection(dir.mult(speed));
         // jump
         if (input.consumeJumpRequested() && characterControl.isOnGround()) {
             characterControl.jump();

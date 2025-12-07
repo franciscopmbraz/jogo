@@ -207,6 +207,25 @@ public class VoxelWorld {
                 }
             }
         }
+        // Geração de manchas de SpeedBlock (2x2) na superfície
+        for (int x = 0; x < sizeX - 1; x++) { // -1 para não sair do mapa com o x+1
+            for (int z = 0; z < sizeZ - 1; z++) { // -1 para não sair do mapa com o z+1
+
+                // Encontra a altura do chão nesta coordenada
+                int y = getTopSolidY(x, z);
+
+                // Se o bloco for Relva, temos uma probabilidade de criar uma mancha
+                // 2% de probabilidade (ajusta o 2 para mais ou menos frequência)
+                if (getBlock(x, y, z) == VoxelPalette.GRASS_ID && random.nextInt(100) < 2) {
+
+                    // Cria um quadrado de 2x2 (4 blocos)
+                    setBlock(x, y, z, VoxelPalette.SPEED_ID);
+                    setBlock(x + 1, y, z, VoxelPalette.SPEED_ID);
+                    setBlock(x, y, z + 1, VoxelPalette.SPEED_ID);
+                    setBlock(x + 1, y, z + 1, VoxelPalette.SPEED_ID);
+                }
+            }
+        }
 
         // ===== ÁRVORES =====
         int numArvores = 150; // número de árvores no terreno

@@ -35,6 +35,8 @@ public class VoxelPalette {
         p.register(new LeavesBlockType()); // id 7
         p.register(new WoodPlankType()); // id 8
         p.register(new SpeedBlockType()); // id 9
+        p.register(new TilledBlockType()); // id 10
+        p.register(new CarrotBlockType()); // id 11
 
         return p;
     }
@@ -49,4 +51,7 @@ public class VoxelPalette {
     public static final byte LEAVES_ID = 7;
     public static final byte WOODPLANK_ID = 8;
     public static final byte SPEED_ID = 9;
+    public static final byte TILLED_ID = 10;
+    public static final byte CARROT_ID = 11;
+
 }

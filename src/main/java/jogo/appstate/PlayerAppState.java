@@ -145,6 +145,9 @@ public class PlayerAppState extends BaseAppState {
        //movimento com a NOVA velocidade (currentMoveSpeed)
         float speed = currentMoveSpeed * (input.isSprinting() ? sprintMultiplier : 1f);
         characterControl.setWalkDirection(dir.mult(speed));
+        Vector3f physPos = playerNode.getWorldTranslation();
+
+        player.setPosition(physPos.x, physPos.y, physPos.z);
         // jump
         if (input.consumeJumpRequested() && characterControl.isOnGround()) {
             characterControl.jump();

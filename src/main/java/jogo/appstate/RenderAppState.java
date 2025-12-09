@@ -99,7 +99,19 @@ public class RenderAppState extends BaseAppState {
             Geometry g = new Geometry(obj.getName(), new Box(0.3f, 0.3f, 0.3f));
             g.setMaterial(colored(ColorRGBA.Yellow));
             return g;
+        } else if (obj instanceof jogo.gameobject.character.NpcFazendeiro) {
+            Geometry g = new Geometry(obj.getName(), new Box(0.3f, 0.9f, 0.3f));
+            g.setMaterial(colored(ColorRGBA.Yellow)); // Amarelo
+            g.setLocalTranslation(0, 0.9f, 0);
+            return g;
+
+        } else if (obj instanceof jogo.gameobject.character.NpcComilao) {
+            Geometry g = new Geometry(obj.getName(), new Box(0.3f, 0.9f, 0.3f));
+            g.setMaterial(colored(ColorRGBA.Magenta)); // Rosa
+            g.setLocalTranslation(0, 0.9f, 0);
+            return g;
         }
+
         return null;
     }
 

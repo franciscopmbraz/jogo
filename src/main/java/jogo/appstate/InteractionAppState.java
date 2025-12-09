@@ -57,6 +57,11 @@ public class InteractionAppState extends BaseAppState {
                 System.out.println("Interacted with item: " + obj.getName());
                 return; // prefer item interaction if both are hit
             }
+            //Se for Npc classe onInteract() nas classes npc
+            if (obj instanceof jogo.interaction.Interactable interactable) {
+                interactable.onInteract();
+                return;
+            }
         }
 
         // 2) If no item hit, consider voxel block under crosshair (exercise for students)

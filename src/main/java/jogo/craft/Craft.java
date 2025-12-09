@@ -1,11 +1,6 @@
 package jogo.craft;
 
-import jogo.gameobject.item.BlockItem;
-import jogo.gameobject.item.Inventory;
-import jogo.gameobject.item.Item;
-import jogo.gameobject.item.SimpleItem;
-import jogo.gameobject.item.PickaxeItemStone;
-import jogo.gameobject.item.PickaxeItemWood;
+import jogo.gameobject.item.*;
 import jogo.voxel.VoxelPalette;
 
 public class Craft {
@@ -41,6 +36,13 @@ public class Craft {
                             new Recipe.Ingredient("troncop", 3),
                             new Recipe.Ingredient("pau", 2)
                     }
+            ),
+            new Recipe(
+                    "espadap",1,
+                    new Recipe.Ingredient[]{
+                            new Recipe.Ingredient("pau",1),
+                            new Recipe.Ingredient("pedra",2)
+                    }
             )
 
     };
@@ -74,8 +76,10 @@ public class Craft {
             resultItem = new BlockItem("troncop", VoxelPalette.WOODPLANK_ID);
         } else if (name.equals("picaretap")) {
             resultItem = new PickaxeItemStone();
-        } else if (name.equals("picareta m")) {
+        } else if (name.equals("picaretam")) {
             resultItem = new PickaxeItemWood();
+        } else if (name.equals("espadap")) {
+            resultItem = new SwordItemStone();
         } else {
             resultItem = new SimpleItem(name);
         }

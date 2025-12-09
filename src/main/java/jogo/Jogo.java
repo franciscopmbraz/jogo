@@ -6,16 +6,9 @@ import com.jme3.bullet.PhysicsSpace;
 import com.jme3.system.AppSettings;
 import com.jme3.math.ColorRGBA;
 import com.jme3.post.FilterPostProcessor;
-import jogo.appstate.InputAppState;
-import jogo.appstate.PlayerAppState;
-import jogo.appstate.WorldAppState;
-import jogo.appstate.HudAppState;
-import jogo.appstate.RenderAppState;
-import jogo.appstate.InteractionAppState;
+import jogo.appstate.*;
 import jogo.engine.GameRegistry;
 import jogo.engine.RenderIndex;
-import jogo.appstate.CraftingAppState;
-import jogo.appstate.EnemyAppState;
 
 
 /**
@@ -72,6 +65,8 @@ public class Jogo extends SimpleApplication {
         stateManager.attach(player);
         EnemyAppState enemyState = new EnemyAppState(rootNode, registry, physicsSpace, player,world);
         stateManager.attach(enemyState);
+        registry.add(new jogo.gameobject.character.NpcFazendeiro());
+        registry.add(new jogo.gameobject.character.NpcComilao());
 
 
         // Post-processing: SSAO for subtle contact shadows
@@ -92,6 +87,8 @@ public class Jogo extends SimpleApplication {
         stateManager.attach(new HudAppState(guiNode, assetManager));
         // Menu de Crafting (abre com C)
         stateManager.attach(new CraftingAppState());
+        // ataques a inimigos
+        stateManager.attach(new CombatAppState(rootNode, cam, input, renderIndex));
 
     }
 }

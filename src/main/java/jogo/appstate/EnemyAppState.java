@@ -42,6 +42,23 @@ public class EnemyAppState extends BaseAppState {
 
     @Override
     public void update(float tpf) {
+
+        // 1. VERIFICAÇÃO DE MORTE
+        if (enemy.getHealth() <= 0) {
+            // Se ainda tem corpo físico, vamos limpar tudo
+            if (enemyControl != null) {
+                System.out.println("O inimigo morreu!");
+
+                // Remove a física (para de cair/colidir)
+                physicsSpace.remove(enemyControl);
+                enemyControl = null;
+
+                // Remove do registo (o RenderAppState vai apagar o visual automaticamente)
+                registry.remove(enemy);
+            }
+            return; // Sai da função, não faz mais nada (não anda nem ataca)
+        }
+
         // Se o controlo físico
         if (enemyControl == null) {
             setupEnemyPhysics();

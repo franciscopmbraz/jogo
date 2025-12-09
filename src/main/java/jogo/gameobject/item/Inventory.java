@@ -6,11 +6,11 @@ public class Inventory {
 
     private static final Inventory INVENTORY = new Inventory();
 
-    public static Inventory getGlobalInventory() {
+    public static Inventory getInventory() {
         return INVENTORY;
     }
 
-    public static void addToGlobal(Item item, int amount) {
+    public static void addInventory(Item item, int amount) {
         INVENTORY.addItem(item, amount);
     }
 

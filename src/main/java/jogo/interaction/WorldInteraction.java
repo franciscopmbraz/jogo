@@ -13,8 +13,8 @@ public class WorldInteraction {
         // Descobrir qual é o bloco alvo
         byte idAtual = vw.getBlock(cell.x, cell.y, cell.z);
 
-        // Obter o inventário e o item que está "na mão" (selecionado)
-        Inventory inv = Inventory.getGlobalInventory(); //
+        // Obter o inventário e o item que está selecionado
+        Inventory inv = Inventory.getInventory(); //
         ItemStack stack = inv.getSelectedStack();       //
 
         // Transformar Relva em Lavoura
@@ -33,7 +33,6 @@ public class WorldInteraction {
             if (stack != null && !stack.isEmpty()) {
 
                 // Verifica se o item é a cenoura
-                // O CenouraItem define o nome como "cenoura" no construtor
                 if (stack.getItem().getName().equals("cenoura")) {
 
                     // Planta a cenoura

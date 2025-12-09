@@ -3,7 +3,7 @@ package jogo.gameobject.character;
 import jogo.gameobject.item.Inventory;
 
 public class Player extends Character {
-    private final Inventory inventory = Inventory.getGlobalInventory();
+    private final Inventory inventory = Inventory.getInventory();
 
     public Player() {
         super("Player");

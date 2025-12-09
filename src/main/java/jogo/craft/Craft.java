@@ -80,7 +80,7 @@ public class Craft {
             resultItem = new SimpleItem(name);
         }
 
-        Inventory.addToGlobal(resultItem, recipe.getResultAmount());
+        Inventory.addInventory(resultItem, recipe.getResultAmount());
         return true;
     }
 }

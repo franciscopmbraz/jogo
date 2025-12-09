@@ -106,13 +106,13 @@ public class VoxelWorld {
         jogo.gameobject.item.Item customDrop = type.getCustomDrop();
 
         if (customDrop != null) {
-            Inventory.addToGlobal(customDrop, customDrop.getAmount());
+            Inventory.addInventory(customDrop, customDrop.getAmount());
         } else {
             // 3. Lógica antiga (para pedra, madeira, etc.)
             byte dropId = type.getDropId();
             if (dropId != VoxelPalette.AIR_ID) {
                 String nome = palette.get(dropId).getName();
-                Inventory.addToGlobal(new BlockItem(nome, dropId), 1);
+                Inventory.addInventory(new BlockItem(nome, dropId), 1);
             }
         }
         return true;

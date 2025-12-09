@@ -3,7 +3,7 @@ package jogo.gameobject.character;
 public class Enemy extends Character {
 
     private int damage = 10;
-    private float speed = 4.0f; // Mais lento que o player (8.0f)
+    private float speed = 4.0f; // playes 8.0f
 
     public Enemy() {
         super("Inimigo");

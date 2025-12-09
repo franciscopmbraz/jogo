@@ -16,8 +16,8 @@ import com.jme3.math.Vector2f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 
-import jogo.craft.Craft;     // <-- COMO TU PEDISTE
-import jogo.craft.Recipe;    // <-- COMO TU PEDISTE
+import jogo.craft.Craft;
+import jogo.craft.Recipe;
 import jogo.gameobject.item.Inventory;
 
 public class CraftingAppState extends BaseAppState implements ActionListener {
@@ -49,7 +49,7 @@ public class CraftingAppState extends BaseAppState implements ActionListener {
         inputManager = sapp.getInputManager();
         cam = sapp.getCamera();
 
-        recipes = Craft.getRecipes();  // <-- USANDO A TUA CLASSE Craft
+        recipes = Craft.getRecipes();
 
         title = new BitmapText(guiFont);
         title.setText("MENU DE CRAFT");
@@ -138,7 +138,7 @@ public class CraftingAppState extends BaseAppState implements ActionListener {
     }
 
     private void refreshTexts() {
-        Inventory inv = Inventory.getGlobalInventory();
+        Inventory inv = Inventory.getInventory();
 
         for (int i = 0; i < recipes.length; i++) {
             Recipe r = recipes[i];
@@ -177,7 +177,7 @@ public class CraftingAppState extends BaseAppState implements ActionListener {
     }
 
     private void tryCraft(int index) {
-        Inventory inv = Inventory.getGlobalInventory();
+        Inventory inv = Inventory.getInventory();
         Recipe r = recipes[index];
 
         if (Craft.craft(inv, r)) {

@@ -10,12 +10,12 @@ public class ItemStack {
         this.count = count;
     }
 
-    // Slot vazio
+    // Cria e devolve um novo objeto ItemStack que representa "nada"
     public static ItemStack empty() {
 
         return new ItemStack(null, 0);
     }
-
+    // Verifica o estado atual de um objeto que já existe.
     public boolean isEmpty() {
         return item == null || count <= 0;
     }

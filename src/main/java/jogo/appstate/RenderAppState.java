@@ -242,26 +242,72 @@ public class RenderAppState extends BaseAppState {
     }
 
     private Spatial createTankVisual() {
-        Node node = new Node("TankVisual");
-        Material matRed = colored(ColorRGBA.Red);
-        Material matGrey = colored(ColorRGBA.DarkGray);
+        Node node = new Node("GiantVisual");
 
-        // Escala global (1.5x maior que o normal)
-        float scale = 1.5f;
+        // Cores do Gigante
+        Material matSkin = colored(new ColorRGBA(0.96f, 0.76f, 0.62f, 1f)); // Pele
+        Material matCoat = colored(new ColorRGBA(0.6f, 0.4f, 0.2f, 1f));    // Casaco Castanho
+        Material matPants = colored(new ColorRGBA(0.2f, 0.2f, 0.2f, 1f));   // Calças Cinza Escuro
+        Material matBeard = colored(new ColorRGBA(0.3f, 0.15f, 0.05f, 1f)); // Barba/Cabelo
 
-        // Cabeça
-        Geometry head = new Geometry("Head", new Box(0.3f * scale, 0.3f * scale, 0.3f * scale));
-        head.setMaterial(matRed);
-        head.setLocalTranslation(0, 1.6f * scale, 0);
+        float scale = 1.8f; // Escala Gigante
+
+        // 1. Cabeça (Careca/Pele)
+        Geometry head = new Geometry("Head", new Box(0.25f * scale, 0.28f * scale, 0.25f * scale));
+        head.setMaterial(matSkin);
+        head.setLocalTranslation(0, 1.65f * scale, 0);
         node.attachChild(head);
 
-        // Corpo (Largo)
-        Geometry body = new Geometry("Body", new Box(0.5f * scale, 0.5f * scale, 0.3f * scale));
-        body.setMaterial(matGrey);
-        body.setLocalTranslation(0, 0.8f * scale, 0);
+        // (Opcional) Costeletas/Barba castanha
+        Geometry beard = new Geometry("Beard", new Box(0.26f * scale, 0.1f * scale, 0.15f * scale));
+        beard.setMaterial(matBeard);
+        beard.setLocalTranslation(0, 1.55f * scale, -0.1f * scale);
+        node.attachChild(beard);
+
+        // 2. Tronco (Casaco Castanho Largo)
+        Geometry body = new Geometry("Body", new Box(0.5f * scale, 0.55f * scale, 0.35f * scale));
+        body.setMaterial(matCoat);
+        body.setLocalTranslation(0, 0.85f * scale, 0);
         node.attachChild(body);
 
-        // Ajustar posição base
+        // 3. Braços (Ombros do casaco + Braços de pele)
+        // Braço Esquerdo
+        Geometry shoulderL = new Geometry("ShoulderL", new Box(0.2f * scale, 0.2f * scale, 0.2f * scale));
+        shoulderL.setMaterial(matCoat);
+        shoulderL.setLocalTranslation(-0.6f * scale, 1.2f * scale, 0);
+        node.attachChild(shoulderL);
+
+        Geometry armL = new Geometry("ArmL", new Box(0.18f * scale, 0.45f * scale, 0.18f * scale));
+        armL.setMaterial(matSkin); // Braços nus
+        armL.setLocalTranslation(-0.6f * scale, 0.6f * scale, 0.2f * scale); // Ligeiramente à frente
+        // Rodar para parecer que vai dar um soco
+        armL.setLocalRotation(new Quaternion().fromAngleAxis(-0.3f, Vector3f.UNIT_X));
+        node.attachChild(armL);
+
+        // Braço Direito
+        Geometry shoulderR = new Geometry("ShoulderR", new Box(0.2f * scale, 0.2f * scale, 0.2f * scale));
+        shoulderR.setMaterial(matCoat);
+        shoulderR.setLocalTranslation(0.6f * scale, 1.2f * scale, 0);
+        node.attachChild(shoulderR);
+
+        Geometry armR = new Geometry("ArmR", new Box(0.18f * scale, 0.45f * scale, 0.18f * scale));
+        armR.setMaterial(matSkin); // Braços nus
+        armR.setLocalTranslation(0.6f * scale, 0.6f * scale, 0.2f * scale);
+        armR.setLocalRotation(new Quaternion().fromAngleAxis(-0.3f, Vector3f.UNIT_X));
+        node.attachChild(armR);
+
+        // 4. Pernas (Curtas e grossas)
+        Geometry legL = new Geometry("LegL", new Box(0.22f * scale, 0.35f * scale, 0.22f * scale));
+        legL.setMaterial(matPants);
+        legL.setLocalTranslation(-0.25f * scale, 0.35f * scale, 0);
+        node.attachChild(legL);
+
+        Geometry legR = new Geometry("LegR", new Box(0.22f * scale, 0.35f * scale, 0.22f * scale));
+        legR.setMaterial(matPants);
+        legR.setLocalTranslation(0.25f * scale, 0.35f * scale, 0);
+        node.attachChild(legR);
+
+        // Ajuste Pivot
         node.setLocalTranslation(0, -0.9f, 0);
         return node;
     }

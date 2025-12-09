@@ -2,6 +2,7 @@ package jogo.gameobject.character;
 
 import jogo.interaction.Interactable;
 import jogo.gameobject.item.Inventory;
+import jogo.appstate.HudAppState;
 
 public class NpcEater extends Character implements Interactable {
 
@@ -20,11 +21,11 @@ public class NpcEater extends Character implements Interactable {
 
             inv.removeItem("cenoura", 20);
 
-            System.out.println("Comilão: Mmmm! Cenouras frescas! Obrigado!");
-            System.out.println("(Missão Completa)");
+            HudAppState.finalizarMissao();
+
 
         } else {
-            System.out.println("Comilão: Estou cheio de fome... O Fazendeiro não te deu nada?");
+            HudAppState.mostrarMensagem("O Fazendeiro prometeu-me 20 cenouras... Ainda nada?");
         }
     }
 }

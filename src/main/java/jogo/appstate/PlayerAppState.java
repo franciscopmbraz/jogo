@@ -180,6 +180,7 @@ public class PlayerAppState extends BaseAppState {
 
         player.setHealth(100);
         player.getInventory().clear();
+        HudAppState.adicionarPenalidade(60);
     }
 
     private Vector3f computeWorldMove(Vector3f inputXZ) {

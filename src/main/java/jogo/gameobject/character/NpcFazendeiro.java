@@ -3,6 +3,7 @@ package jogo.gameobject.character;
 import jogo.interaction.Interactable;
 import jogo.gameobject.item.Inventory;
 import jogo.gameobject.item.CenouraItem;
+import jogo.appstate.HudAppState;
 
 public class NpcFazendeiro extends Character implements Interactable {
 
@@ -17,14 +18,14 @@ public class NpcFazendeiro extends Character implements Interactable {
     @Override
     public void onInteract() {
         if (!deuSemente) {
-            System.out.println("Fazendeiro: Olá! Toma esta cenoura. Planta-a na terra lavrada!");
-            System.out.println("Fazendeiro: Depois colhe o resultado (5 cenouras) e leva ao meu amigo Comilão.");
-
+            HudAppState.mostrarMensagem("Toma esta cenoura! Planta-a na terra lavrada.|\n Depois colhe o resultado (20 cenouras) e leva ao meu amigo aqui ao lado.");
+            HudAppState.iniciarTimer();
             Inventory.addInventory(new CenouraItem(), 1);
+
 
             deuSemente = true;
         } else {
-            System.out.println("Fazendeiro: Já plantaste? O meu amigo está à espera da comida.");
+            HudAppState.mostrarMensagem("Já plantaste? O meu amigo está à espera da comida.");
         }
     }
 }

@@ -65,6 +65,8 @@ public class Jogo extends SimpleApplication {
         stateManager.attach(player);
         EnemyAppState enemyState = new EnemyAppState(rootNode, registry, physicsSpace, player,world);
         stateManager.attach(enemyState);
+        TankAppState tankState = new TankAppState(rootNode, registry, physicsSpace, player, world);
+        stateManager.attach(tankState);
         registry.add(new jogo.gameobject.character.NpcFazendeiro());
         registry.add(new jogo.gameobject.character.NpcEater());
 

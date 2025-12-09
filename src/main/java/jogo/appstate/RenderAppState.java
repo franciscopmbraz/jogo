@@ -109,7 +109,12 @@ public class RenderAppState extends BaseAppState {
             Spatial s = createEaterVisual();
             s.setName(obj.getName()); 
             return s;
+        } else if (obj instanceof jogo.gameobject.character.TankEnemy) {
+            Spatial s = createTankVisual();
+            s.setName(obj.getName());
+            return s;
         }
+
 
         return null;
     }
@@ -236,6 +241,30 @@ public class RenderAppState extends BaseAppState {
         return node;
     }
 
+    private Spatial createTankVisual() {
+        Node node = new Node("TankVisual");
+        Material matRed = colored(ColorRGBA.Red);
+        Material matGrey = colored(ColorRGBA.DarkGray);
+
+        // Escala global (1.5x maior que o normal)
+        float scale = 1.5f;
+
+        // Cabeça
+        Geometry head = new Geometry("Head", new Box(0.3f * scale, 0.3f * scale, 0.3f * scale));
+        head.setMaterial(matRed);
+        head.setLocalTranslation(0, 1.6f * scale, 0);
+        node.attachChild(head);
+
+        // Corpo (Largo)
+        Geometry body = new Geometry("Body", new Box(0.5f * scale, 0.5f * scale, 0.3f * scale));
+        body.setMaterial(matGrey);
+        body.setLocalTranslation(0, 0.8f * scale, 0);
+        node.attachChild(body);
+
+        // Ajustar posição base
+        node.setLocalTranslation(0, -0.9f, 0);
+        return node;
+    }
     private Spatial createEaterVisual() {
         Node node = new Node("EaterVisual");
 

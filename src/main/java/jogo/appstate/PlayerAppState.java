@@ -54,6 +54,8 @@ public class PlayerAppState extends BaseAppState {
         return player;
     }
 
+
+
     @Override
     protected void initialize(Application app) {
         // query world for recommended spawn now that it should be initialized
@@ -92,6 +94,13 @@ public class PlayerAppState extends BaseAppState {
 
     @Override
     public void update(float tpf) {
+        if (player.getHealth() <= 0) {
+            System.out.println("Morreste! A dar respawn...");
+            // Atualiza o spawn caso o mundo tenha mudado
+            if (world != null) spawnPosition = world.getRecommendedSpawnPosition();
+            respawn();
+        }
+
         // respawn on request
         if (input.consumeRespawnRequested()) {
             // refresh spawn from world in case terrain changed
@@ -168,6 +177,9 @@ public class PlayerAppState extends BaseAppState {
         // Reset look
         this.pitch = -0.35f;
         applyViewToCamera();
+
+        player.setHealth(100);
+        player.getInventory().clear();
     }
 
     private Vector3f computeWorldMove(Vector3f inputXZ) {

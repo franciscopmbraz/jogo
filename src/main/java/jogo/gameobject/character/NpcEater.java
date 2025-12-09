@@ -8,7 +8,7 @@ public class NpcEater extends Character implements Interactable {
     public NpcEater() {
         super("Comilao")
         ;
-        this.setPosition(171, 47, 174);
+        this.setPosition(147, 35, 145 );
     }
 
     @Override

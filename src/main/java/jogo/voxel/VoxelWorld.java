@@ -128,7 +128,7 @@ public class VoxelWorld {
         // Configurar o noise
         FastNoiseLite noise = new FastNoiseLite();
         noise.SetNoiseType(FastNoiseLite.NoiseType.OpenSimplex2);
-        noise.SetFrequency(0.015f); // suavidade do terreno
+        noise.SetFrequency(0.010f); // suavidade do terreno
         noise.SetSeed(1337);        // random seed do mapa
 
         // Centro do mundo em X/Z

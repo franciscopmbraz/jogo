@@ -7,7 +7,7 @@ public class Enemy extends Character {
 
     public Enemy() {
         super("Inimigo");
-        this.setPosition(172, 47, 175   );
+        this.setPosition(172, 47, 175);
         this.setHealth(100);
     }
 

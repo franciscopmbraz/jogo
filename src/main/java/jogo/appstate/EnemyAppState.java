@@ -94,7 +94,7 @@ public class EnemyAppState extends BaseAppState {
                 int bz = (int) Math.floor(checkPos.z);
 
                 byte blockId = world.getVoxelWorld().getBlock(bx, by, bz);
-                boolean wallAhead = blockId != VoxelPalette.AIR_ID && blockId != VoxelPalette.GRASS_ID; // Ignora relva/flores se forem não-sólidos
+                boolean wallAhead = blockId != VoxelPalette.AIR_ID ; // Ignora relva/flores se forem não-sólidos
 
                 // Se houver parede ou o jogador estiver alto -> SALTA
                 if (wallAhead || (playerIsHigher && distance < 5.0f)) {

@@ -11,7 +11,7 @@ public class NpcFazendeiro extends Character implements Interactable {
     public NpcFazendeiro() {
         super("Fazendeiro");
         // Ajusta a posição conforme o teu mapa
-        this.setPosition(170, 47, 175 );
+        this.setPosition(146, 35, 147);
     }
 
     @Override

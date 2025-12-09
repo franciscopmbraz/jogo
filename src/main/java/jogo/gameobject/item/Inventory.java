@@ -32,6 +32,12 @@ public class Inventory {
         if (index < 0 || index >= HOTBAR_SIZE) return;
         slots[index] = (stack == null ? ItemStack.empty() : stack);
     }
+    public void clear() {
+        for (int i = 0; i < HOTBAR_SIZE; i++) {
+            slots[i] = ItemStack.empty();
+        }
+        System.out.println("Inventário limpo!");
+    }
 
     public int getSelectedHotbarSlot() {
         return selectedHotbarSlot;

@@ -12,6 +12,7 @@ import com.jme3.scene.Spatial;
 import jogo.engine.RenderIndex;
 import jogo.gameobject.GameObject;
 import jogo.gameobject.character.Enemy;
+import jogo.gameobject.character.TankEnemy;
 import jogo.gameobject.item.Inventory;
 import jogo.gameobject.item.ItemStack;
 import jogo.gameobject.item.SwordItem;
@@ -47,7 +48,6 @@ public class CombatAppState extends BaseAppState {
 
     @Override
     public void update(float tpf) {
-        // Reduzir o cooldown
         if (attackCooldown > 0) {
             attackCooldown -= tpf;
         }
@@ -55,7 +55,6 @@ public class CombatAppState extends BaseAppState {
         // Se o rato não estiver capturado, ignora
         if (!input.isMouseCaptured()) return;
 
-        // Usa o input de "Break" (Botão Esquerdo) para atacar
         // Verificamos se o cooldown já passou
         if (input.isBreakingHeld() && attackCooldown <= 0) {
             performAttack();
@@ -64,45 +63,39 @@ public class CombatAppState extends BaseAppState {
     }
 
     private void performAttack() {
-        // 1. Lançar o raio a partir da câmara
         Vector3f origin = cam.getLocation();
         Vector3f dir = cam.getDirection();
         Ray ray = new Ray(origin, dir);
-        ray.setLimit(3.5f); // Alcance da espada (3.5 metros)
+        ray.setLimit(4.5f);
 
-        // 2. Verificar colisões com objetos da cena
         CollisionResults results = new CollisionResults();
         rootNode.collideWith(ray, results);
 
         if (results.size() > 0) {
-            // Pegar no objeto mais próximo
             CollisionResult closest = results.getClosestCollision();
             Spatial s = closest.getGeometry();
-
-            // Procurar o GameObject associado a este Spatial (usando o RenderIndex)
             GameObject obj = findObject(s);
 
-            // 3. Se for um Inimigo, dar dano
+            // Calcular dano
+            int damage = 1;
+            Inventory inv = Inventory.getInventory();
+            ItemStack hand = inv.getSelectedStack();
+
+            if (hand != null && !hand.isEmpty() && hand.getItem() instanceof SwordItem sword) {
+                damage = sword.getDamage();
+            }
+
+            // 1. Se for INIMIGO NORMAL
             if (obj instanceof Enemy enemy) {
-
-                // Calcular dano base
-                int damage = 1; // Dano do punho (sem arma)
-
-                // Verificar se tem espada na mão
-                Inventory inv = Inventory.getInventory();
-                ItemStack hand = inv.getSelectedStack();
-
-                if (hand != null && !hand.isEmpty() && hand.getItem() instanceof SwordItem sword) {
-                    damage = sword.getDamage();
-                }
-
-                // Aplicar dano
                 int novaVida = enemy.getHealth() - damage;
                 enemy.setHealth(novaVida);
-
-                System.out.println("Ataque! Dano: " + damage + " | Vida Inimigo: " + novaVida);
-
-                // (Opcional) Empurrão visual ou som de hit aqui
+                System.out.println("Hit no Zombie! Vida: " + novaVida);
+            }
+            // 2. Se for TANK (GIGANTE)
+            else if (obj instanceof TankEnemy tank) {
+                int novaVida = tank.getHealth() - damage;
+                tank.setHealth(novaVida);
+                System.out.println("Hit no Gigante! Vida: " + novaVida);
             }
         }
     }

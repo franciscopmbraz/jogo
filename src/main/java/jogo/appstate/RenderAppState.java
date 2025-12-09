@@ -17,7 +17,6 @@ import jogo.framework.math.Vec3;
 import jogo.gameobject.GameObject;
 import jogo.gameobject.character.Player;
 import jogo.gameobject.item.Item;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;

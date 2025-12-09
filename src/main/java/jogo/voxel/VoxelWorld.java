@@ -101,12 +101,17 @@ public class VoxelWorld {
 
         if( type  instanceof UnbreakableType) return false;
         setBlock(x, y, z, VoxelPalette.AIR_ID);
+        //Tenta obter um drop personalizado
+        jogo.gameobject.item.Item customDrop = type.getCustomDrop();
 
-        byte dropId = type.getDropId();
-        if (dropId != VoxelPalette.AIR_ID) {
-            String nome = palette.get(dropId).getName();
-            // Cria um novo item do tipo bloco e adiciona ao inventário
-            Inventory.addInventory(new BlockItem(nome, dropId), 1);
+        if (customDrop != null) {
+            Inventory.addInventory(customDrop, customDrop.getAmount());
+        } else {
+            byte dropId = type.getDropId();
+            if (dropId != VoxelPalette.AIR_ID) {
+                String nome = palette.get(dropId).getName();
+                Inventory.addInventory(new BlockItem(nome, dropId), 1);
+            }
         }
         return true;
 

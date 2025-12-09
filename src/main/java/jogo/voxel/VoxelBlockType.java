@@ -41,6 +41,7 @@ public abstract class VoxelBlockType {
         return id;
     }
 
-
-
+    public Item getCustomDrop() {
+        return null;
+    }
 }

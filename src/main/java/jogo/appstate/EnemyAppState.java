@@ -49,14 +49,14 @@ public class EnemyAppState extends BaseAppState {
             if (enemyControl != null) {
                 System.out.println("O inimigo morreu!");
 
-                // Remove a física (para de cair/colidir)
+                // Remove a física
                 physicsSpace.remove(enemyControl);
                 enemyControl = null;
 
                 // Remove do registo (o RenderAppState vai apagar o visual automaticamente)
                 registry.remove(enemy);
             }
-            return; // Sai da função, não faz mais nada (não anda nem ataca)
+            return;
         }
 
         // Se o controlo físico

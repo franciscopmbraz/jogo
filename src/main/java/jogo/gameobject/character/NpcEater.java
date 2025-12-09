@@ -3,10 +3,11 @@ package jogo.gameobject.character;
 import jogo.interaction.Interactable;
 import jogo.gameobject.item.Inventory;
 
-public class NpcComilao extends Character implements Interactable {
+public class NpcEater extends Character implements Interactable {
 
-    public NpcComilao() {
-        super("Comilao");
+    public NpcEater() {
+        super("Comilao")
+        ;
         this.setPosition(171, 47, 174);
     }
 

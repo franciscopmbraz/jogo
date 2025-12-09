@@ -66,7 +66,7 @@ public class Jogo extends SimpleApplication {
         EnemyAppState enemyState = new EnemyAppState(rootNode, registry, physicsSpace, player,world);
         stateManager.attach(enemyState);
         registry.add(new jogo.gameobject.character.NpcFazendeiro());
-        registry.add(new jogo.gameobject.character.NpcComilao());
+        registry.add(new jogo.gameobject.character.NpcEater());
 
 
         // Post-processing: SSAO for subtle contact shadows

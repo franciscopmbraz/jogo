@@ -100,16 +100,16 @@ public class RenderAppState extends BaseAppState {
             g.setMaterial(colored(ColorRGBA.Yellow));
             return g;
         } else if (obj instanceof jogo.gameobject.character.NpcFazendeiro) {
-            Geometry g = new Geometry(obj.getName(), new Box(0.3f, 0.9f, 0.3f));
-            g.setMaterial(colored(ColorRGBA.Yellow)); // Amarelo
-            g.setLocalTranslation(0, 0.9f, 0);
-            return g;
+            // Fazendeiro
+            Spatial s = createFarmerVisual();
+            s.setName(obj.getName());
+            return s;
 
-        } else if (obj instanceof jogo.gameobject.character.NpcComilao) {
-            Geometry g = new Geometry(obj.getName(), new Box(0.3f, 0.9f, 0.3f));
-            g.setMaterial(colored(ColorRGBA.Magenta)); // Rosa
-            g.setLocalTranslation(0, 0.9f, 0);
-            return g;
+        } else if (obj instanceof jogo.gameobject.character.NpcEater) {
+            //Comilap
+            Spatial s = createEaterVisual();
+            s.setName(obj.getName()); 
+            return s;
         }
 
         return null;
@@ -178,6 +178,113 @@ public class RenderAppState extends BaseAppState {
         return zombieNode;
     }
 
+    private Spatial createFarmerVisual() {
+        Node node = new Node("FarmerVisual");
+
+        // Materiais
+        Material matSkin = colored(new ColorRGBA(0.96f, 0.76f, 0.62f, 1f)); // Pele
+        Material matShirt = colored(ColorRGBA.Yellow);                      // Camisa Amarela
+        Material matPants = colored(new ColorRGBA(0.4f, 0.25f, 0.1f, 1f));  // Calças Castanhas
+        Material matHat = colored(new ColorRGBA(0.8f, 0.6f, 0.2f, 1f));     // Chapéu Palha
+
+        // 1. Cabeça
+        Geometry head = new Geometry("Head", new Box(0.25f, 0.25f, 0.25f));
+        head.setMaterial(matSkin);
+        head.setLocalTranslation(0, 1.55f, 0);
+        node.attachChild(head);
+
+        // 2. Chapéu (Aba + Topo)
+        Geometry hatBrim = new Geometry("HatBrim", new Box(0.35f, 0.02f, 0.35f));
+        hatBrim.setMaterial(matHat);
+        hatBrim.setLocalTranslation(0, 1.78f, 0); // Pouco acima da cabeça
+        node.attachChild(hatBrim);
+
+        Geometry hatTop = new Geometry("HatTop", new Box(0.20f, 0.12f, 0.20f));
+        hatTop.setMaterial(matHat);
+        hatTop.setLocalTranslation(0, 1.9f, 0);
+        node.attachChild(hatTop);
+
+        // 3. Corpo
+        Geometry body = new Geometry("Body", new Box(0.3f, 0.45f, 0.15f));
+        body.setMaterial(matShirt);
+        body.setLocalTranslation(0, 0.85f, 0);
+        node.attachChild(body);
+
+        // 4. Braços (neutros, ao lado do corpo)
+        Geometry armL = new Geometry("ArmL", new Box(0.12f, 0.45f, 0.12f));
+        armL.setMaterial(matShirt);
+        armL.setLocalTranslation(-0.42f, 0.85f, 0);
+        node.attachChild(armL);
+
+        Geometry armR = new Geometry("ArmR", new Box(0.12f, 0.45f, 0.12f));
+        armR.setMaterial(matShirt);
+        armR.setLocalTranslation(0.42f, 0.85f, 0);
+        node.attachChild(armR);
+
+        // 5. Pernas
+        Geometry legL = new Geometry("LegL", new Box(0.13f, 0.45f, 0.13f));
+        legL.setMaterial(matPants);
+        legL.setLocalTranslation(-0.15f, 0.45f, 0); // Posição ajustada
+        node.attachChild(legL);
+
+        Geometry legR = new Geometry("LegR", new Box(0.13f, 0.45f, 0.13f));
+        legR.setMaterial(matPants);
+        legR.setLocalTranslation(0.15f, 0.45f, 0);
+        node.attachChild(legR);
+
+        // Ajustar Pivot para os pés (0,0,0) ficarem no chão
+        node.setLocalTranslation(0, -0.9f, 0);
+        return node;
+    }
+
+    private Spatial createEaterVisual() {
+        Node node = new Node("EaterVisual");
+
+        // Materiais
+        Material matSkin = colored(new ColorRGBA(0.96f, 0.76f, 0.62f, 1f));
+        Material matShirt = colored(ColorRGBA.Magenta); // A cor dele
+        Material matPants = colored(ColorRGBA.Blue);    // Calças azuis
+
+        // 1. Cabeça
+        Geometry head = new Geometry("Head", new Box(0.25f, 0.25f, 0.25f));
+        head.setMaterial(matSkin);
+        head.setLocalTranslation(0, 1.55f, 0);
+        node.attachChild(head);
+
+        // 2. Corpo (Mais largo que o normal - 0.35f de largura em vez de 0.3f)
+        Geometry body = new Geometry("Body", new Box(0.35f, 0.45f, 0.2f)); // Também mais profundo (0.2f)
+        body.setMaterial(matShirt);
+        body.setLocalTranslation(0, 0.85f, 0);
+        node.attachChild(body);
+
+        // 3. Braços (Levantados como se estivesse a comer ou à espera de algo)
+        Geometry armL = new Geometry("ArmL", new Box(0.12f, 0.45f, 0.12f));
+        armL.setMaterial(matShirt);
+        // Roda um pouco para a frente
+        armL.setLocalRotation(new Quaternion().fromAngleAxis(-0.5f, Vector3f.UNIT_X));
+        armL.setLocalTranslation(-0.48f, 0.95f, 0.2f);
+        node.attachChild(armL);
+
+        Geometry armR = new Geometry("ArmR", new Box(0.12f, 0.45f, 0.12f));
+        armR.setMaterial(matShirt);
+        armR.setLocalRotation(new Quaternion().fromAngleAxis(-0.5f, Vector3f.UNIT_X));
+        armR.setLocalTranslation(0.48f, 0.95f, 0.2f);
+        node.attachChild(armR);
+
+        // 4. Pernas
+        Geometry legL = new Geometry("LegL", new Box(0.14f, 0.45f, 0.14f)); // Pernas um pouco mais grossas
+        legL.setMaterial(matPants);
+        legL.setLocalTranslation(-0.16f, 0.45f, 0);
+        node.attachChild(legL);
+
+        Geometry legR = new Geometry("LegR", new Box(0.14f, 0.45f, 0.14f));
+        legR.setMaterial(matPants);
+        legR.setLocalTranslation(0.16f, 0.45f, 0);
+        node.attachChild(legR);
+
+        node.setLocalTranslation(0, -0.9f, 0);
+        return node;
+    }
     @Override
     protected void cleanup(Application app) {
         if (gameNode != null) {

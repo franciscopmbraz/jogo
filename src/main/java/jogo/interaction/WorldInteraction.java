@@ -26,7 +26,7 @@ public class WorldInteraction {
             }
         }
 
-        // Regra 2: Plantar Cenoura na Lavoura
+        // Plantar Cenoura na Lavoura
         if (idAtual == VoxelPalette.TILLED_ID) {
 
             // Verifica se existe um stack selecionado e se não está vazio

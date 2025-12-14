@@ -12,6 +12,7 @@ import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import jogo.gameobject.character.Player;
+import jogo.engine.GameRegistry;
 
 public class InputAppState extends BaseAppState implements ActionListener, AnalogListener {
 
@@ -25,6 +26,12 @@ public class InputAppState extends BaseAppState implements ActionListener, Analo
     private volatile boolean placeRequested;
     private float mouseDX, mouseDY;
     private boolean mouseCaptured = true;
+    private GameRegistry registry;
+
+    public void setRegistry(GameRegistry registry) {
+        this.registry = registry;
+    }
+
 
     @Override
     protected void initialize(Application app) {
@@ -53,6 +60,10 @@ public class InputAppState extends BaseAppState implements ActionListener, Analo
         // Interact (E)
         im.addMapping("Interact", new KeyTrigger(KeyInput.KEY_E));
 
+        im.addMapping("SaveGame", new KeyTrigger(KeyInput.KEY_L));
+        im.addMapping("LoadGame", new KeyTrigger(KeyInput.KEY_P));
+
+
         // Hotbar 1-9
         im.addMapping("Hotbar1", new KeyTrigger(KeyInput.KEY_1));
         im.addMapping("Hotbar2", new KeyTrigger(KeyInput.KEY_2));
@@ -65,7 +76,7 @@ public class InputAppState extends BaseAppState implements ActionListener, Analo
         im.addMapping("Hotbar9", new KeyTrigger(KeyInput.KEY_9));
 
 
-        im.addListener(this, "MoveForward", "MoveBackward", "MoveLeft", "MoveRight", "Jump", "Sprint", "ToggleMouse", "Break","Place", "ToggleShading", "Respawn", "Interact","Hotbar1", "Hotbar2", "Hotbar3", "Hotbar4", "Hotbar5", "Hotbar6", "Hotbar7", "Hotbar8", "Hotbar9");
+        im.addListener(this, "MoveForward", "MoveBackward", "MoveLeft", "MoveRight", "Jump", "Sprint", "ToggleMouse", "Break","Place", "ToggleShading", "Respawn", "Interact","SaveGame", "LoadGame","Hotbar1", "Hotbar2", "Hotbar3", "Hotbar4", "Hotbar5", "Hotbar6", "Hotbar7", "Hotbar8", "Hotbar9");
         im.addListener(this, "MouseX+", "MouseX-", "MouseY+", "MouseY-");
     }
 
@@ -88,6 +99,8 @@ public class InputAppState extends BaseAppState implements ActionListener, Analo
         im.deleteMapping("ToggleShading");
         im.deleteMapping("Respawn");
         im.deleteMapping("Interact");
+        im.deleteMapping("SaveGame");
+        im.deleteMapping("LoadGame");
         im.deleteMapping("Hotbar1");
         im.deleteMapping("Hotbar2");
         im.deleteMapping("Hotbar3");
@@ -125,7 +138,7 @@ public class InputAppState extends BaseAppState implements ActionListener, Analo
             }
             case "Break" -> {
                 if (mouseCaptured) {
-                    breakRequested = isPressed;        // TRUE enquanto o botão estiver carregado
+                    breakRequested = isPressed;  // TRUE enquanto o botão estiver carregado
                 }
             }
 
@@ -141,6 +154,28 @@ public class InputAppState extends BaseAppState implements ActionListener, Analo
             }
             case "Interact" -> {
                 if (isPressed && mouseCaptured) interactRequested = true;
+            }
+            case "SaveGame" -> {
+                if (isPressed) {
+                    PlayerAppState pas = getApplication().getStateManager().getState(PlayerAppState.class);
+                    if (pas != null && pas.getPlayer() != null) {
+                        // Chama o GameSaver passando o Player e o Registry (NPCs)
+                        jogo.engine.GameSaver.saveGame(pas.getPlayer(), registry);
+                        jogo.appstate.HudAppState.mostrarMensagem("Jogo Guardado");
+                    }
+                }
+            }
+            case "LoadGame" -> {
+                if (isPressed) {
+                    PlayerAppState pas = getApplication().getStateManager().getState(PlayerAppState.class);
+                    if (pas != null && pas.getPlayer() != null) {
+                        boolean sucesso = jogo.engine.GameSaver.loadGame(pas.getPlayer(), registry);
+                        if (sucesso) {
+                            pas.warpToPlayerPosition(); // Atualiza a física
+                            jogo.appstate.HudAppState.mostrarMensagem("Jogo Carregado");
+                        }
+                    }
+                }
             }
             case "Hotbar1", "Hotbar2", "Hotbar3", "Hotbar4",
                  "Hotbar5", "Hotbar6", "Hotbar7", "Hotbar8", "Hotbar9" -> {

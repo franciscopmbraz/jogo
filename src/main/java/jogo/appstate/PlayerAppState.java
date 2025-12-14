@@ -54,6 +54,14 @@ public class PlayerAppState extends BaseAppState {
         return player;
     }
 
+    public void warpToPlayerPosition() {
+        if (player != null && characterControl != null) {
+            // Converte a posição lógica do teu jogo (Vec3) para o Vector3f do motor gráfico
+            // E força o corpo físico a ir para lá imediatamente
+            characterControl.warp(new Vector3f(player.getPosition().x, player.getPosition().y, player.getPosition().z));
+        }
+    }
+
 
 
     @Override

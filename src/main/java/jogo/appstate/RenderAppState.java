@@ -178,7 +178,6 @@ public class RenderAppState extends BaseAppState {
         //
         // (O BetterCharacterControl geralmente centraliza o objeto, mas visualmente isto ajuda)
         zombieNode.setLocalTranslation(0, -0.9f, 0);
-
         return zombieNode;
     }
 

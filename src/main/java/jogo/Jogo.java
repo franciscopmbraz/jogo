@@ -52,6 +52,7 @@ public class Jogo extends SimpleApplication {
 
         // Engine registry and render layers
         GameRegistry registry = new GameRegistry();
+        input.setRegistry(registry);
         RenderIndex renderIndex = new RenderIndex();
         stateManager.attach(new RenderAppState(rootNode, assetManager, registry, renderIndex));
         stateManager.attach(new InteractionAppState(rootNode, cam, input, renderIndex, world));
@@ -91,6 +92,9 @@ public class Jogo extends SimpleApplication {
         stateManager.attach(new CraftingAppState());
         // ataques a inimigos
         stateManager.attach(new CombatAppState(rootNode, cam, input, renderIndex));
-
+        if (jogo.engine.GameSaver.loadGame(player.getPlayer(), registry)) {
+            player.warpToPlayerPosition();
+            System.out.println("Save carregado automaticamente!");
+        }
     }
 }

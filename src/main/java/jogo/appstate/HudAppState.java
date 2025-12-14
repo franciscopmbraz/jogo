@@ -8,7 +8,6 @@ import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Node;
-import jogo.gameobject.character.Player;
 import jogo.gameobject.item.Inventory;
 import jogo.gameobject.item.ItemStack;
 
@@ -36,6 +35,7 @@ public class HudAppState extends BaseAppState {
 
     // Temporizador para a mensagem desaparecer
     private float messageTimer = 0f;
+    private float victoryTimer = 0f;
 
     public HudAppState(Node guiNode, AssetManager assetManager) {
         this.guiNode = guiNode;
@@ -61,6 +61,7 @@ public class HudAppState extends BaseAppState {
             instance.timerRunning = false;
             instance.missaoAcabada = true;
             instance.exibirVitoria();
+
 
         }
     }
@@ -165,8 +166,12 @@ public class HudAppState extends BaseAppState {
         int screenW = getApplication().getCamera().getWidth();
         int screenH = getApplication().getCamera().getHeight();
 
+
         missaoCumpridaText.setLocalTranslation((screenW - width) / 2f, (screenH + height) / 2f, 0);
+
+        victoryTimer = 5.0f;
     }
+
 
     private void centerCrosshair() {
         SimpleApplication sapp = (SimpleApplication) getApplication();
@@ -211,13 +216,21 @@ public class HudAppState extends BaseAppState {
             if (hotbarTexts[i] != null) hotbarTexts[i].setText(label);
         }
 
-        // --- Lógica do Temporizador da Mensagem
+        //  Temporizador da Mensagem
         if (messageTimer > 0) {
             messageTimer -= tpf;
             if (messageTimer <= 0) {
                 legendaText.setText(""); // Apaga o texto quando o tempo acaba
             }
         }
+        // Timer Vitória
+        if (victoryTimer > 0) {
+            victoryTimer -= tpf;
+            if (victoryTimer <= 0) {
+                missaoCumpridaText.setText(""); // Apaga o texto da vitória
+            }
+        }
+
     }
 
     @Override

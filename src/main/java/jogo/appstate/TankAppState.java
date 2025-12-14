@@ -112,6 +112,14 @@ public class TankAppState extends BaseAppState {
         }
     }
 
+
+    public void warpToPosition() {
+        if (tank != null && tankControl != null) {
+            tankControl.warp(new Vector3f(tank.getPosition().x, tank.getPosition().y, tank.getPosition().z));
+        }
+    }
+
+
     @Override
     protected void cleanup(Application app) {
         if (tankControl != null) physicsSpace.remove(tankControl);

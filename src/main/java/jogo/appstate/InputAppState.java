@@ -172,6 +172,17 @@ public class InputAppState extends BaseAppState implements ActionListener, Analo
                         boolean sucesso = jogo.engine.GameSaver.loadGame(pas.getPlayer(), registry);
                         if (sucesso) {
                             pas.warpToPlayerPosition(); // Atualiza a física
+                            // atualiza Enemy
+                            jogo.appstate.EnemyAppState enemyState = getApplication().getStateManager().getState(jogo.appstate.EnemyAppState.class);
+                            if (enemyState != null) {
+                                enemyState.warpToPosition();
+                            }
+
+                            // 3. Atualiza Tank
+                            jogo.appstate.TankAppState tankState = getApplication().getStateManager().getState(jogo.appstate.TankAppState.class);
+                            if (tankState != null) {
+                                tankState.warpToPosition();
+                            }
                             jogo.appstate.HudAppState.mostrarMensagem("Jogo Carregado");
                         }
                     }

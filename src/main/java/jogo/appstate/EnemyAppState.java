@@ -150,6 +150,11 @@ public class EnemyAppState extends BaseAppState {
             }
         }
     }
+    public void warpToPosition() {
+        if (enemy != null && enemyControl != null) {
+            enemyControl.warp(new Vector3f(enemy.getPosition().x, enemy.getPosition().y, enemy.getPosition().z));
+        }
+    }
 
     @Override
     protected void cleanup(Application app) {

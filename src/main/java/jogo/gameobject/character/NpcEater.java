@@ -16,7 +16,12 @@ public class NpcEater extends Character implements Interactable {
     public void onInteract() {
         Inventory inv = Inventory.getInventory();
 
-        // Verifica se tens 5 cenouras
+        if (jogo.appstate.HudAppState.getMonstrosMortos() < 2) {
+            jogo.appstate.HudAppState.mostrarMensagem("Tens de matar os 2 monstros\nantes de entregar as cenouras!");
+            return;
+        }
+        // Verifica se cenouras
+
         if (inv.hasItem("cenoura", 20)) {
 
             inv.removeItem("cenoura", 20);

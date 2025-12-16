@@ -14,8 +14,8 @@ public class WorldInteraction {
         byte idAtual = vw.getBlock(cell.x, cell.y, cell.z);
 
         // Obter o inventário e o item que está selecionado
-        Inventory inv = Inventory.getInventory(); //
-        ItemStack stack = inv.getSelectedStack();       //
+        Inventory inv = Inventory.getInventory();
+        ItemStack stack = inv.getSelectedStack();
 
         // Transformar Relva em Lavoura
         if (idAtual == VoxelPalette.GRASS_ID || idAtual == VoxelPalette.DIRT_ID) {

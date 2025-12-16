@@ -35,7 +35,7 @@ public class HudAppState extends BaseAppState {
     private BitmapText missaoCumpridaText;
     private BitmapText highScoreText;
 
-
+    private static int monstrosMortos = 0;
 
 
     private float gameTime = 0f;
@@ -58,6 +58,16 @@ public class HudAppState extends BaseAppState {
         this.guiNode = guiNode;
         this.assetManager = assetManager;
     }
+
+    public static void registarMorteMonstro() {
+        monstrosMortos++;
+        mostrarMensagem("Monstros eliminados: " + monstrosMortos + "/2");
+    }
+    public static int getMonstrosMortos() {
+        return monstrosMortos;
+    }
+
+
 
 
     public static void iniciarTimer() {

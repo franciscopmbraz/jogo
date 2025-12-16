@@ -18,7 +18,7 @@ public class NpcFazendeiro extends Character implements Interactable {
     @Override
     public void onInteract() {
         if (!deuSemente) {
-            HudAppState.mostrarMensagem("Toma esta cenoura! Planta-a na terra lavrada.|\n Depois colhe o resultado (20 cenouras) e leva ao meu amigo aqui ao lado.");
+            HudAppState.mostrarMensagem("Toma esta cenoura! Planta-a na terra lavrada.|\n Depois colhe (20 cenouras) e leva ao meu amigo aqui ao lado.\n Nao te esqueças de matar os inimigos!!");
             HudAppState.iniciarTimer();
             Inventory.addInventory(new CenouraItem(), 1);
 

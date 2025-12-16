@@ -55,6 +55,7 @@ public class EnemyAppState extends BaseAppState {
 
                 // Remove do registo (o RenderAppState vai apagar o visual automaticamente)
                 registry.remove(enemy);
+                jogo.appstate.HudAppState.registarMorteMonstro();
             }
             return;
         }

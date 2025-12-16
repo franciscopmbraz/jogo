@@ -44,6 +44,7 @@ public class TankAppState extends BaseAppState {
                 physicsSpace.remove(tankControl);
                 tankControl = null;
                 registry.remove(tank);
+                jogo.appstate.HudAppState.registarMorteMonstro();
             }
             return;
         }

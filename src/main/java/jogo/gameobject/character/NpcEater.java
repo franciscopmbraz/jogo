@@ -7,7 +7,7 @@ import jogo.appstate.HudAppState;
 public class NpcEater extends Character implements Interactable {
 
     public NpcEater() {
-        super("Comilao")
+        super("Eater")
         ;
         this.setPosition(143, 35, 136 );
     }

@@ -8,9 +8,8 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import jogo.engine.GameRegistry;
-import jogo.gameobject.character.TankEnemy; // Importante
 import jogo.gameobject.character.Player;
-import jogo.voxel.VoxelPalette;
+import jogo.gameobject.character.TankEnemy;
 
 public class TankAppState extends BaseAppState {
 

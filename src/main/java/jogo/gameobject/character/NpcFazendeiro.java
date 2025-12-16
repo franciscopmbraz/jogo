@@ -1,9 +1,9 @@
 package jogo.gameobject.character;
 
-import jogo.interaction.Interactable;
-import jogo.gameobject.item.Inventory;
-import jogo.gameobject.item.CenouraItem;
 import jogo.appstate.HudAppState;
+import jogo.gameobject.item.CenouraItem;
+import jogo.gameobject.item.Inventory;
+import jogo.interaction.Interactable;
 
 public class NpcFazendeiro extends Character implements Interactable {
 

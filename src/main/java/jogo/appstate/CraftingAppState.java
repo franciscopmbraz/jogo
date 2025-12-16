@@ -15,7 +15,6 @@ import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.Vector2f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
-
 import jogo.craft.Craft;
 import jogo.craft.Recipe;
 import jogo.gameobject.item.Inventory;

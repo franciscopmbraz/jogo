@@ -11,14 +11,10 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
+import jogo.gameobject.character.Player;
+import jogo.gameobject.item.*;
 import jogo.voxel.VoxelPalette;
 import jogo.voxel.VoxelWorld;
-import jogo.gameobject.character.Player;
-import jogo.gameobject.item.BlockItem;
-import jogo.gameobject.item.Inventory;
-import jogo.gameobject.item.ItemStack;
-import jogo.gameobject.item.Item;
-import jogo.gameobject.item.PickaxeItem;
 
 
 

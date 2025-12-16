@@ -1,8 +1,8 @@
 package jogo.gameobject.character;
 
-import jogo.interaction.Interactable;
-import jogo.gameobject.item.Inventory;
 import jogo.appstate.HudAppState;
+import jogo.gameobject.item.Inventory;
+import jogo.interaction.Interactable;
 
 public class NpcEater extends Character implements Interactable {
 

@@ -4,32 +4,19 @@ import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Spatial;
+import jogo.interaction.Interactable;
 
-public abstract class Enemy extends Character {
+public abstract class Ally extends Character implements Interactable {
 
-    protected int damage;
-    protected float speed;
-    // Novos campos para física
-    protected float physicsRadius;
-    protected float physicsHeight;
-    protected float physicsMass;
-
-    public Enemy(String name) { // Posição no construtor
+    public Ally(String name) {
         super(name);
-
     }
 
-    public int getDamage() { return damage; }
-    public float getSpeed() { return speed; }
-
-    public float getPhysicsRadius() { return physicsRadius; }
-    public float getPhysicsHeight() { return physicsHeight; }
-    public float getPhysicsMass() { return physicsMass; }
-
+    // Obriga todos os NPCs a terem um visual próprio
     public abstract Spatial getModel(AssetManager assetManager);
 
+    // Helper para criar materiais (evita duplicação)
     protected Material createMaterial(AssetManager assetManager, ColorRGBA color) {
-        // ... (igual ao que tens) ...
         Material m = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
         m.setBoolean("UseMaterialColors", true);
         m.setColor("Diffuse", color.clone());

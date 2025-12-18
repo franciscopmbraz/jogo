@@ -8,6 +8,7 @@ import com.jme3.input.controls.*;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import jogo.engine.GameRegistry;
+import jogo.engine.GameSaver;
 import jogo.gameobject.character.Player;
 
 public class InputAppState extends BaseAppState implements ActionListener, AnalogListener {
@@ -56,8 +57,10 @@ public class InputAppState extends BaseAppState implements ActionListener, Analo
         // Interact (E)
         im.addMapping("Interact", new KeyTrigger(KeyInput.KEY_E));
 
-        im.addMapping("SaveGame", new KeyTrigger(KeyInput.KEY_L));
+        // --- SAVE / LOAD ---
+        im.addMapping("SaveGame", new KeyTrigger(KeyInput.KEY_K));
         im.addMapping("LoadGame", new KeyTrigger(KeyInput.KEY_P));
+        im.addMapping("DropItem", new KeyTrigger(KeyInput.KEY_G));
 
 
         // Hotbar 1-9
@@ -71,7 +74,7 @@ public class InputAppState extends BaseAppState implements ActionListener, Analo
         im.addMapping("Hotbar8", new KeyTrigger(KeyInput.KEY_8));
         im.addMapping("Hotbar9", new KeyTrigger(KeyInput.KEY_9));
 
-
+        im.addListener(this, "DropItem");
         im.addListener(this, "MoveForward", "MoveBackward", "MoveLeft", "MoveRight", "Jump", "Sprint", "ToggleMouse", "Break","Place", "ToggleShading", "Respawn", "Interact","SaveGame", "LoadGame","Hotbar1", "Hotbar2", "Hotbar3", "Hotbar4", "Hotbar5", "Hotbar6", "Hotbar7", "Hotbar8", "Hotbar9");
         im.addListener(this, "MouseX+", "MouseX-", "MouseY+", "MouseY-");
     }
@@ -154,32 +157,31 @@ public class InputAppState extends BaseAppState implements ActionListener, Analo
             case "SaveGame" -> {
                 if (isPressed) {
                     PlayerAppState pas = getApplication().getStateManager().getState(PlayerAppState.class);
-                    if (pas != null && pas.getPlayer() != null) {
-                        // Chama o GameSaver passando o Player e o Registry (NPCs)
-                        jogo.engine.GameSaver.saveGame(pas.getPlayer(), registry);
-                        jogo.appstate.HudAppState.mostrarMensagem("Jogo Guardado");
+                    WorldAppState was = getApplication().getStateManager().getState(WorldAppState.class);
+
+                    if (pas != null && pas.getPlayer() != null && was != null) {
+                        // Passamos Player, Registry E O MUNDO (was.getVoxelWorld())
+                        GameSaver.saveGame(pas.getPlayer(), registry, was.getVoxelWorld());
+                        HudAppState.mostrarMensagem("Jogo Guardado com Sucesso!");
                     }
                 }
             }
             case "LoadGame" -> {
                 if (isPressed) {
                     PlayerAppState pas = getApplication().getStateManager().getState(PlayerAppState.class);
-                    if (pas != null && pas.getPlayer() != null) {
-                        boolean sucesso = jogo.engine.GameSaver.loadGame(pas.getPlayer(), registry);
-                        if (sucesso) {
-                            pas.warpToPlayerPosition(); // Atualiza a física
-                            // atualiza Enemy
-                            jogo.appstate.EnemyAppState enemyState = getApplication().getStateManager().getState(jogo.appstate.EnemyAppState.class);
-                            if (enemyState != null) {
-                                enemyState.warpToPosition();
-                            }
+                    WorldAppState was = getApplication().getStateManager().getState(WorldAppState.class);
 
-                            // 3. Atualiza Tank
-                            jogo.appstate.TankAppState tankState = getApplication().getStateManager().getState(jogo.appstate.TankAppState.class);
-                            if (tankState != null) {
-                                tankState.warpToPosition();
-                            }
-                            jogo.appstate.HudAppState.mostrarMensagem("Jogo Carregado");
+                    if (pas != null && pas.getPlayer() != null && was != null) {
+                        boolean sucesso = GameSaver.loadGame(pas.getPlayer(), registry, was.getVoxelWorld());
+                        if (sucesso) {
+                            pas.warpToPlayerPosition(); // Atualiza física do jogador
+
+                            // Forçar atualização visual do mundo
+                            was.getVoxelWorld().reloadAllMeshes();
+
+                            HudAppState.mostrarMensagem("Jogo Carregado!");
+                        } else {
+                            HudAppState.mostrarMensagem("Erro ao Carregar!");
                         }
                     }
                 }
@@ -187,16 +189,23 @@ public class InputAppState extends BaseAppState implements ActionListener, Analo
             case "Hotbar1", "Hotbar2", "Hotbar3", "Hotbar4",
                  "Hotbar5", "Hotbar6", "Hotbar7", "Hotbar8", "Hotbar9" -> {
                 if (isPressed && mouseCaptured) {
+                    //name.substring("Hotbar") corta as primeiras 6 letras da string
+                    // O que resta trasnforma em inteiro
                     int num = Integer.parseInt(name.substring("Hotbar".length()));
-                    int index = num - 1;
+                    int index = num - 1; // tira 1 ao index para se Hotbar3 ser indice 2
 
                     PlayerAppState pas = getApplication().getStateManager().getState(PlayerAppState.class);
                     if (pas != null) {
-                        Player player = pas.getPlayer();
+                        Player player = pas.getPlayer(); // vai buscar o player
                         if (player != null) {
+                            // diz que a hotbar selecionada é o index
                             player.getInventory().setSelectedHotbarSlot(index);
                         }
                     }
+                }
+            }case "DropItem" -> {
+                if (name.equals("DropItem") && !isPressed) {
+                    getStateManager().getState(PlayerAppState.class).dropItemInHand();
                 }
             }
         }

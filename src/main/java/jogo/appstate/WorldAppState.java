@@ -85,11 +85,12 @@ public class WorldAppState extends BaseAppState {
 
     @Override
     public void update(float tpf) {
+        // verifica se o botao esta a ser primido
         if (input != null && input.isMouseCaptured() && input.isBreakingHeld()) {
-
-            // (terias de adaptar isBreakingHeld() ou usar um flag de "está a segurar")
+            // Lança um raio da câmara (cam) até 6 metros (6f) para ver se acerta num bloco sólido.
             var pick = voxelWorld.pickFirstSolid(cam, 6f);
             if (pick.isEmpty()) {
+                // se nao acerta em nada o progesso reseta
                 breakingCell = null;
                 breakingProgress = 0f;
                 return;
@@ -98,6 +99,7 @@ public class WorldAppState extends BaseAppState {
             pick.ifPresent(hit -> {
                 VoxelWorld.Vector3i cell = hit.cell;
 
+                // Se o jogador mudar a mira para um bloco diferente reseta
                 if (breakingCell == null || cell.x != breakingCell.x || cell.y != breakingCell.y || cell.z != breakingCell.z) {
                     breakingCell = cell;
                     breakingProgress = 0f;
@@ -109,9 +111,12 @@ public class WorldAppState extends BaseAppState {
                 // ver item na mão
                 Inventory inv = playerAppState.getPlayer().getInventory();
                 ItemStack hand = inv.getSelectedStack();
+                // se tiver a picareta aumenta
                 float toolMult = 1.0f;
 
                 if (hand != null && !hand.isEmpty()) {
+                    //Se o jogador tiver uma picareta (PickaxeItem)
+                    // a velocidade de partição (toolMult) aumenta.
                     Item item = hand.getItem();
                     if (item instanceof PickaxeItem pickaxe) {
                         toolMult = pickaxe.getSpeedMultiplier();
@@ -120,12 +125,14 @@ public class WorldAppState extends BaseAppState {
 
                 breakingProgress += tpf * baseSpeed * toolMult;
 
-                float timeToBreak = 0.5f; // 1 segundo com toolMult = 1
+                float timeToBreak = 0.5f; // tempo de partir
 
-                if (breakingProgress >= timeToBreak) {
-                    voxelWorld.breakAt(cell.x, cell.y, cell.z);
+                if (breakingProgress >= timeToBreak) { // quando o tempo == 0.5
+                    voxelWorld.breakAt(cell.x, cell.y, cell.z); // partimos
+                    //Obrigam o jogo a redesenhar o terreno e atualizar as colisões.
                     voxelWorld.rebuildDirtyChunks(physicsSpace);
                     playerAppState.refreshPhysics();
+                    // reseta
                     breakingProgress = 0f;
                     breakingCell = null;
                 }
@@ -133,7 +140,7 @@ public class WorldAppState extends BaseAppState {
             });
 
         } else {
-            // botão não está a ser mantido → reset
+            // botão não está a ser mantido reseta
             breakingCell = null;
             breakingProgress = 0f;
         }
@@ -157,13 +164,14 @@ public class WorldAppState extends BaseAppState {
 
                 Inventory inv = player.getInventory();
                 ItemStack stack = inv.getSelectedStack();
+                // se nao tiver nada nao mão
                 if (stack == null || stack.isEmpty()) return;
 
                 if (!(stack.getItem() instanceof BlockItem blockItem)) {
                     return; // item na mão não é bloco
                 }
 
-                // só coloca se o alvo estiver vazio (ar)
+                // só coloca se o alvo estiver vazio
                 byte existing = voxelWorld.getBlock(x, y, z);
                 if (existing != VoxelPalette.AIR_ID) {
                     return;

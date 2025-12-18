@@ -25,7 +25,7 @@ public class CombatAppState extends BaseAppState {
     private final RenderIndex renderIndex;
 
     private float attackCooldown = 0f;
-    private final float ATTACK_RATE = 0.5f; // Tempo entre ataques (segundos)
+    private final float ATTACK_RATE = 0.5f; // Tempo entre ataques
 
     public CombatAppState(Node rootNode, Camera cam, InputAppState input, RenderIndex renderIndex) {
         this.rootNode = rootNode;
@@ -48,50 +48,56 @@ public class CombatAppState extends BaseAppState {
 
     @Override
     public void update(float tpf) {
-        if (attackCooldown > 0) {
+        // Gestão do Cooldown
+        if (attackCooldown > 0) {  // se attackColldown exitir então tiramos tempo
             attackCooldown -= tpf;
         }
 
-        // Se o rato não estiver capturado, ignora
+        // Se o rato não estiver capturado, ignora  proteção para os clicks do menu
         if (!input.isMouseCaptured()) return;
 
         // Verificamos se o cooldown já passou
-        if (input.isBreakingHeld() && attackCooldown <= 0) {
-            performAttack();
-            attackCooldown = ATTACK_RATE; // Reinicia o cooldown
+        if (input.isBreakingHeld() && attackCooldown <= 0) { // se clicar e não houver coldown
+            performAttack(); // atacamos
+            attackCooldown = ATTACK_RATE; // Reinicia o cooldown passa aos 0,5f
         }
     }
 
     private void performAttack() {
+        // Cria uma linha invisível que começa na câmara (olhos do jogador)
+        // e segue na direção para onde ele está a olhar.
         Vector3f origin = cam.getLocation();
         Vector3f dir = cam.getDirection();
         Ray ray = new Ray(origin, dir);
-        ray.setLimit(4.5f);
+        ray.setLimit(4.5f); // maxima distancia do hit
 
+        // verifica se esse raio "toca" em algum objeto do mundo
         CollisionResults results = new CollisionResults();
+        //guarda a lista de todos os objetos atravessados na variável results
         rootNode.collideWith(ray, results);
 
-        if (results.size() > 0) {
-            CollisionResult closest = results.getClosestCollision();
+        if (results.size() > 0) { // verificamos se acertamos em algo
+            CollisionResult closest = results.getClosestCollision(); // apenas apanhamos o objeto mais proximo
             Spatial s = closest.getGeometry();
-            GameObject obj = findObject(s);
+            GameObject obj = findObject(s); // vê qual o objeto proximo
 
             // Calcular dano
-            int damage = 1;
-            Inventory inv = Inventory.getInventory();
-            ItemStack hand = inv.getSelectedStack();
+            int damage = 5;  // dano default
+            Inventory inv = Inventory.getInventory(); // ver o inventário
+            ItemStack hand = inv.getSelectedStack(); // ver o item na mao
 
+            // Verifica o que o jogador tem na mao
             if (hand != null && !hand.isEmpty() && hand.getItem() instanceof SwordItem sword) {
-                damage = sword.getDamage();
+                damage = sword.getDamage(); // se for espada damos o dano na espada
             }
 
-            // 1. Se for INIMIGO NORMAL
+            // Se for o Zombie dá dano a ele
             if (obj instanceof Enemy enemy) {
                 int novaVida = enemy.getHealth() - damage;
                 enemy.setHealth(novaVida);
                 System.out.println("Hit no Zombie! Vida: " + novaVida);
             }
-            // 2. Se for TANK (GIGANTE)
+            // Se for TANK dá dano ao gigante
             else if (obj instanceof TankEnemy tank) {
                 int novaVida = tank.getHealth() - damage;
                 tank.setHealth(novaVida);
@@ -100,11 +106,14 @@ public class CombatAppState extends BaseAppState {
         }
     }
 
-    // Metodo auxiliar para encontrar o GameObject a partir do Spatial (sobe na hierarquia se necessário)
+    // Metodo auxiliar para encontrar o GameObject a partir do Spatial
+    // Metedo que com o sitio que acertei identifica a que boneco faz parte
     private GameObject findObject(Spatial spatial) {
-        Spatial cur = spatial;
+        Spatial cur = spatial;   // onde acertei
+
         while (cur != null) {
-            GameObject obj = renderIndex.lookup(cur);
+            GameObject obj = renderIndex.lookup(cur); // verifica se o cur existe no RenderIndex
+            // se sim retorna o objeto se nao vai buscar o pai ate dar o objeto
             if (obj != null) return obj;
             cur = cur.getParent();
         }

@@ -11,7 +11,12 @@ import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
+import jogo.engine.GameRegistry;
 import jogo.gameobject.character.Player;
+import jogo.gameobject.item.DroppedItem;
+import jogo.gameobject.item.Inventory;
+import jogo.gameobject.item.Item;
+import jogo.gameobject.item.ItemStack;
 import jogo.voxel.VoxelPalette;
 
 public class PlayerAppState extends BaseAppState {
@@ -26,7 +31,7 @@ public class PlayerAppState extends BaseAppState {
     private Node playerNode;
     private BetterCharacterControl characterControl;
     private Player player;
-
+    private final GameRegistry registry;
     // view angles
     private float yaw = 0f;
     private float pitch = 0f;
@@ -40,13 +45,14 @@ public class PlayerAppState extends BaseAppState {
     private Vector3f spawnPosition = new Vector3f(25.5f, 12f, 25.5f);
     private PointLight playerLight;
 
-    public PlayerAppState(Node rootNode, AssetManager assetManager, Camera cam, InputAppState input, PhysicsSpace physicsSpace, WorldAppState world) {
+    public PlayerAppState(Node rootNode, AssetManager assetManager, Camera cam, InputAppState input, PhysicsSpace physicsSpace, WorldAppState world, GameRegistry registry) {
         this.rootNode = rootNode;
         this.assetManager = assetManager;
         this.cam = cam;
         this.input = input;
         this.physicsSpace = physicsSpace;
         this.world = world;
+        this.registry = registry;
         world.registerPlayerAppState(this);
     }
 
@@ -159,7 +165,7 @@ public class PlayerAppState extends BaseAppState {
             dir = computeWorldMove(wish).normalizeLocal();
         }
 
-       //movimento com a NOVA velocidade (currentMoveSpeed)
+       //movimento com a nova velocidade
         float speed = currentMoveSpeed * (input.isSprinting() ? sprintMultiplier : 1f);
         characterControl.setWalkDirection(dir.mult(speed));
         Vector3f physPos = playerNode.getWorldTranslation();
@@ -206,6 +212,34 @@ public class PlayerAppState extends BaseAppState {
         cam.setLocation(loc);
         cam.setRotation(new com.jme3.math.Quaternion().fromAngles(pitch, yaw, 0f));
     }
+
+
+    public void dropItemInHand() {
+        Inventory inv = Inventory.getInventory();
+
+        // 1. Obter o item que está "na mão" (slot selecionado da hotbar)
+        ItemStack stack = inv.getSelectedStack();
+
+        // 2. Só faz drop se existir um item nesse slot e não estiver vazio
+        if (stack != null && !stack.isEmpty()) {
+            Item itemObj = stack.getItem();
+
+            stack.remove(1);
+
+            Vector3f playerPos = cam.getLocation();
+            Vector3f playerDir = cam.getDirection();
+            Vector3f spawnPos = playerPos.add(playerDir.mult(1.5f)); // 1.5 metros à frente
+
+            // Criar o item lógico (Cenoura)
+            DroppedItem dropped = new DroppedItem(itemObj, spawnPos.x, spawnPos.y, spawnPos.z);
+            registry.add(dropped);
+
+            System.out.println("Drop de " + itemObj.getName());
+        } else {
+            HudAppState.mostrarMensagem("Nao tens para largar!");
+        }
+    }
+
 
     @Override
     protected void cleanup(Application app) {

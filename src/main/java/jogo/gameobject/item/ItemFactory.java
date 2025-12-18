@@ -6,14 +6,14 @@ public class ItemFactory {
 
     public static Item createItem(String name) {
         if (name == null) return null;
-
+        // Serve para guardar os itens e ficar com as definições
         return switch (name) {
             // Ferramentas e Armas
             case "picaretap" -> new PickaxeItemStone();
             case "picaretam" -> new PickaxeItemWood();
             case "espadap" -> new SwordItemStone();
 
-            // Consumíveis
+            // cenoura
             case "cenoura" -> new CenouraItem();
 
             // Blocos

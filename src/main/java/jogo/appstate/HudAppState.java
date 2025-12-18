@@ -13,6 +13,8 @@ import jogo.gameobject.item.Inventory;
 import jogo.gameobject.item.ItemStack;
 
 import java.io.*;
+import java.util.Locale;
+import java.util.Scanner;
 
 
 public class HudAppState extends BaseAppState {
@@ -59,7 +61,7 @@ public class HudAppState extends BaseAppState {
         this.assetManager = assetManager;
     }
 
-    public static void registarMorteMonstro() {
+    public static void registarMorteMonstro() { // registo de mortos
         monstrosMortos++;
         mostrarMensagem("Monstros eliminados: " + monstrosMortos + "/2");
     }
@@ -71,6 +73,7 @@ public class HudAppState extends BaseAppState {
 
 
     public static void iniciarTimer() {
+        // começa o tempo
         if (instance != null && !instance.timerRunning && !instance.missaoAcabada) {
             instance.timerRunning = true;
             instance.gameTime = 0f;
@@ -79,21 +82,22 @@ public class HudAppState extends BaseAppState {
 
 
     public static void adicionarPenalidade(float segundos) {
+        // adiciona penalidade
         if (instance != null && instance.timerRunning) {
             instance.gameTime += segundos;
+            // avisa o player
             instance.mostrarMensagem("Penalidade: +" + (int)segundos + "s");
         }
     }
 
 
     public static void finalizarMissao() {
+        // acaba o tempo
         if (instance != null && instance.timerRunning) {
             instance.timerRunning = false;
             instance.missaoAcabada = true;
+            // mostra que a missao acabou
             instance.exibirVitoria();
-
-
-
 
         }
     }
@@ -113,15 +117,11 @@ public class HudAppState extends BaseAppState {
     protected void initialize(Application app) {
         instance = this; // Regista esta instância
 
-
         font = assetManager.loadFont("Interface/Fonts/Default.fnt");
         // Carregar Highscore do Ficheiro
         carregarHighscore();
 
-
-
-
-        // --- Crosshair ---
+        //Crosshair
         crosshair = new BitmapText(font, false);
         crosshair.setText("+");
         crosshair.setSize(font.getCharSet().getRenderedSize() * 2f);
@@ -129,7 +129,7 @@ public class HudAppState extends BaseAppState {
         centerCrosshair();
 
 
-        // --- Vida ---
+        // Vida
         vidaText = new BitmapText(font, false);
         vidaText.setSize(20f);
         guiNode.attachChild(vidaText);
@@ -138,14 +138,15 @@ public class HudAppState extends BaseAppState {
         vidaText.setLocalTranslation(w - 125, h - 30, 0);
 
 
-        //  Timer (Canto Superior Esquerdo)
+        // Timer no canto superior esquerdo
         timerText = new BitmapText(font, false);
         timerText.setSize(20f);
         timerText.setColor(ColorRGBA.White);
         timerText.setLocalTranslation(20, h - 20, 0);
         timerText.setText("Tempo: 00:00");
         guiNode.attachChild(timerText);
-        // Highscore (Debaixo do Timer)
+
+        // Highscore debaixo do Timer
         highScoreText = new BitmapText(font, false);
         highScoreText.setSize(16f);
         highScoreText.setColor(ColorRGBA.White);
@@ -153,14 +154,12 @@ public class HudAppState extends BaseAppState {
         guiNode.attachChild(highScoreText);
         atualizarTextoHighscore();
 
-
         // Texto de Missão Cumprida
         missaoCumpridaText = new BitmapText(font, false);
         missaoCumpridaText.setSize(50f);
         missaoCumpridaText.setColor(ColorRGBA.Green);
         missaoCumpridaText.setText(""); // Começa invisível
         guiNode.attachChild(missaoCumpridaText);
-
 
         //Legendas / Mensagens
         legendaText = new BitmapText(font, false);
@@ -173,22 +172,26 @@ public class HudAppState extends BaseAppState {
 
 
         //Hotbar
-        float slotWidth = 80f;
-        float spacing   = 20f;
+        float slotWidth = 80f; // Largura imaginária de cada slot
+        float spacing = 20f; // espaço entre slots
+        // Largura Total = (LarguraSlot * 9) + (Espaço * 8)
         float totalWidth = HOTBAR_SLOTS * slotWidth + (HOTBAR_SLOTS - 1) * spacing;
+        // Posição Inicial
         float startX = (w - totalWidth) / 2f;
+        // Altura da Hotbar
         float yHotbar = 40f;
 
 
         for (int i = 0; i < HOTBAR_SLOTS; i++) {
+            //Cria um novo objeto de texto vazio para cada slot
             BitmapText txt = new BitmapText(font, false);
             txt.setSize(14f);
+            // colocação dos numeros
             txt.setLocalTranslation(startX + i * (slotWidth + spacing), yHotbar, 0);
-            guiNode.attachChild(txt);
-            hotbarTexts[i] = txt;
+            guiNode.attachChild(txt); // Faz aparecer no ecrã
+            hotbarTexts[i] = txt; // Guarda na lista para podermos mudar o texto depois
         }
-
-
+        // debug em print
         System.out.println("HudAppState initialized");
     }
 
@@ -198,45 +201,38 @@ public class HudAppState extends BaseAppState {
         if (legendaText != null) {
             legendaText.setText(texto);
 
-
             // Centrar o texto
             float textWidth = legendaText.getLineWidth();
             int screenW = getApplication().getCamera().getWidth();
             int screenH = getApplication().getCamera().getHeight();
             legendaText.setLocalTranslation((screenW - textWidth) / 2f, screenH / 2f + 100, 0);
 
-
-            // tempo0 visivel
+            // tempo visivel
             messageTimer = 4.0f;
         }
     }
+
     private void exibirVitoria() {
-
-
         //Logica do score
         boolean novoRecorde = false;
 
-
-        if (bestTime == -1 || gameTime < bestTime) {
+        if (bestTime == -1 || gameTime < bestTime) {// se não houver best ou gametime<besttime
             bestTime = gameTime;
-            guardarHighscore(); //
-            atualizarTextoHighscore();
-            novoRecorde = true;
+            guardarHighscore(); // guardamos o highscore
+            atualizarTextoHighscore(); // executamos na linha 277
+            novoRecorde = true; // passa a existir novo record
         }
-
 
         // Formatar o tempo final
         int minutos = (int) (gameTime / 60);
         int segundos = (int) (gameTime % 60);
         String tempoFinal = String.format("%02d:%02d", minutos, segundos);
 
-
         String msg = "MISSAO CUMPRIDA!\nTempo: " + tempoFinal;
         if (novoRecorde) {
             msg += "\nNOVO RECORDE!";
         }
         missaoCumpridaText.setText(msg);
-
 
         // Centrar no ecrã
         float width = missaoCumpridaText.getLineWidth();
@@ -245,23 +241,28 @@ public class HudAppState extends BaseAppState {
         int screenH = getApplication().getCamera().getHeight();
 
 
-
-
         missaoCumpridaText.setLocalTranslation((screenW - width) / 2f, (screenH + height) / 2f, 0);
 
-
+        // tempo que aparece
         victoryTimer = 5.0f;
     }
+
     private void carregarHighscore() {
         File file = new File(HIGHSCORE_FILE);
+
         if (!file.exists()) {
             bestTime = -1f;
             return;
         }
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line = reader.readLine();
-            if (line != null) {
-                bestTime = Float.parseFloat(line);
+        try (Scanner scanner = new Scanner(file)) {
+            // Define o Locale como US para garantir que o ponto (.)
+            // seja lido como separador decimal (ex: 10.5), e não a vírgula.
+            scanner.useLocale(Locale.US);
+            if (scanner.hasNextFloat()) {
+                bestTime = scanner.nextFloat();
+            } else {
+                // O ficheiro existe mas não tem um float válido
+                bestTime = -1f;
             }
         } catch (Exception e) {
             System.err.println("Erro ao ler highscore: " + e.getMessage());
@@ -269,6 +270,7 @@ public class HudAppState extends BaseAppState {
         }
     }
     private void guardarHighscore() {
+        //  Metedo que guarda o bestTime
         try (PrintWriter writer = new PrintWriter(new FileWriter(HIGHSCORE_FILE))) {
             writer.println(bestTime);
         } catch (IOException e) {
@@ -278,6 +280,7 @@ public class HudAppState extends BaseAppState {
 
 
     private void atualizarTextoHighscore() {
+        //  Atualiza o texto do Highscore
         if (bestTime < 0) {
             highScoreText.setText("Melhor: --:--");
         } else {
@@ -304,7 +307,6 @@ public class HudAppState extends BaseAppState {
     public void update(float tpf) {
         centerCrosshair();
 
-
         // Logica timer
         if (timerRunning) {
             gameTime += tpf;
@@ -313,13 +315,11 @@ public class HudAppState extends BaseAppState {
             timerText.setText(String.format("Tempo: %02d:%02d", minutos, segundos));
         }
 
-
         // Atualiza Vida
         PlayerAppState pas = getApplication().getStateManager().getState(PlayerAppState.class);
         if (pas != null && pas.getPlayer() != null) {
             vidaText.setText("Vida: " + pas.getPlayer().getHealth());
         }
-
 
         // Atualiza Hotbar
         Inventory inv = Inventory.getInventory();
@@ -336,7 +336,6 @@ public class HudAppState extends BaseAppState {
             }
             if (hotbarTexts[i] != null) hotbarTexts[i].setText(label);
         }
-
 
         //  Temporizador da Mensagem
         if (messageTimer > 0) {

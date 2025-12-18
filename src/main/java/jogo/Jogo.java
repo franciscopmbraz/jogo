@@ -20,7 +20,7 @@ public class Jogo extends SimpleApplication {
         Jogo app = new Jogo();
         app.setShowSettings(true); // show settings dialog
         AppSettings settings = new AppSettings(true);
-        settings.setTitle("Test");
+        settings.setTitle("IscteCraft");
         settings.setWidth(1280);
         settings.setHeight(720);
         settings.setGammaCorrection(true); // enable sRGB gamma-correct rendering
@@ -62,7 +62,7 @@ public class Jogo extends SimpleApplication {
         // chest.setPosition(26.5f, world.getRecommendedSpawnPosition().y - 2f, 26.5f);
         // registry.add(chest);
 
-        PlayerAppState player = new PlayerAppState(rootNode, assetManager, cam, input, physicsSpace, world);
+        PlayerAppState player = new PlayerAppState(rootNode, assetManager, cam, input, physicsSpace, world,registry);
         stateManager.attach(player);
         EnemyAppState enemyState = new EnemyAppState(rootNode, registry, physicsSpace, player,world);
         stateManager.attach(enemyState);
@@ -70,6 +70,9 @@ public class Jogo extends SimpleApplication {
         stateManager.attach(tankState);
         registry.add(new jogo.gameobject.character.NpcFazendeiro());
         registry.add(new jogo.gameobject.character.NpcEater());
+
+        DropManagerAppState dropManager = new DropManagerAppState(rootNode, registry, physicsSpace);
+        stateManager.attach(dropManager);
 
 
         // Post-processing: SSAO for subtle contact shadows
@@ -92,8 +95,9 @@ public class Jogo extends SimpleApplication {
         stateManager.attach(new CraftingAppState());
         // ataques a inimigos
         stateManager.attach(new CombatAppState(rootNode, cam, input, renderIndex));
-        if (jogo.engine.GameSaver.loadGame(player.getPlayer(), registry)) {
+        if (jogo.engine.GameSaver.loadGame(player.getPlayer(), registry, world.getVoxelWorld())) {
             player.warpToPlayerPosition();
+            world.getVoxelWorld().reloadAllMeshes(); // Atualizar o visual do mundo
             System.out.println("Save carregado automaticamente!");
         }
     }

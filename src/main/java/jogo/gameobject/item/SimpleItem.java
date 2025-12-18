@@ -5,7 +5,7 @@ public class SimpleItem extends Item {
     public SimpleItem(String name) {
         super(name);
     }
-
+    // Maneira de guardar objetos sem propriedades
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -138,13 +138,13 @@ public class VoxelWorld {
         int centerX = sizeX / 2;
         int centerZ = sizeZ / 2;
 
-        int worldSize = 256;           // área mapa
+        int worldSize = 256; // área mapa
         int minYWorld = 0;
-        int maxYWorld = sizeY - 1;    //63
+        int maxYWorld = sizeY - 1;//63
 
         // Definir profundidade:
-        int bedrockY     = 0;          // cama de bedrock no fundo
-        int firstStoneY  = bedrockY + 1;
+        int bedrockY = 0; // cama de bedrock no fundo
+        int firstStoneY = bedrockY + 1;
 
 
         int maxHeightVariation = 6;   // variação do relevo
@@ -156,7 +156,7 @@ public class VoxelWorld {
         if (baseHeight < minTerrainY) baseHeight = minTerrainY;
         if (baseHeight > maxTerrainY) baseHeight = maxTerrainY;
 
-        // ===== TERRENO BASE =====
+        // TERRENO BASE
         for (int dx = -worldSize / 2; dx < worldSize / 2; dx++) {
             int x = centerX + dx;
             if (x < 0 || x >= sizeX) continue;
@@ -215,6 +215,7 @@ public class VoxelWorld {
                 }
             }
         }
+
         // Geração de manchas de SpeedBlock (2x2) na superfície
         for (int x = 0; x < sizeX - 1; x++) { // -1 para não sair do mapa com o x+1
             for (int z = 0; z < sizeZ - 1; z++) { // -1 para não sair do mapa com o z+1
@@ -235,7 +236,7 @@ public class VoxelWorld {
             }
         }
 
-        // ===== ÁRVORES =====
+        // ÁRVORES
         int numArvores = 150; // número de árvores no terreno
         for (int i = 0; i < numArvores; i++) {
             int treeX = centerX + random.nextInt(worldSize - 40) - (worldSize / 2 - 20);
@@ -243,7 +244,7 @@ public class VoxelWorld {
 
             if (treeX < 0 || treeX >= sizeX || treeZ < 0 || treeZ >= sizeZ) continue;
 
-            // Altura do terreno naquele ponto (com o mesmo noise)
+            // Altura do terreno naquele ponto
             float noiseValue = noise.GetNoise(treeX - centerX, treeZ - centerZ);
             int baseY = (int) Math.round(baseHeight + noiseValue * maxHeightVariation);
             if (baseY < minTerrainY) baseY = minTerrainY;
@@ -259,26 +260,26 @@ public class VoxelWorld {
                 }
             }
 
-            // Copas
+            // Copas das arvores
             int leavesRadius = 2; // raio
 
-            for (int dx = -leavesRadius; dx <= leavesRadius; dx++) {
-                for (int dy = -1; dy <= 2; dy++) {
-                    for (int dz = -leavesRadius; dz <= leavesRadius; dz++) {
+            for (int dx = -leavesRadius; dx <= leavesRadius; dx++) {  // Largura (Oeste -> Este)
+                for (int dy = -1; dy <= 2; dy++) {    // Altura (Um pouco abaixo do topo -> Acima do topo)
+                    for (int dz = -leavesRadius; dz <= leavesRadius; dz++) { // Profundidade (Norte -> Sul)
 
 
                         if (Math.abs(dx) + Math.abs(dz) <= leavesRadius + 1 &&
                                 !(dx == 0 && dz == 0 && dy < 0))
                         {
-                            int x = treeX + dx;
-                            int y = baseY + height + dy;
-                            int z = treeZ + dz;
+                            int x = treeX + dx;             // Posição Real X = Centro da Árvore + Desvio
+                            int y = baseY + height + dy;    // Posição Real Y = Topo do Tronco + Desvio
+                            int z = treeZ + dz;             // Posição Real Z = Centro da Árvore + Desvio
 
                             if (x >= 0 && x < sizeX &&
                                     z >= 0 && z < sizeZ &&
                                     y >= 0 && y <= maxYWorld)
-                            {
-                                setBlock(x, y, z, VoxelPalette.LEAVES_ID);
+                            {// Verifica se está dentro dos limites do mundo
+                                setBlock(x, y, z, VoxelPalette.LEAVES_ID); // Coloca o bloco de folhas!
                             }
                         }
                     }
@@ -535,5 +536,41 @@ public class VoxelWorld {
             this.y = (int) vec3f.y;
             this.z = (int) vec3f.z;
         }
+    }
+    public Map<Vector3i, Chunk> getChunks() {
+        Map<Vector3i, Chunk> chunkMap = new HashMap<>();
+        for (int x = 0; x < chunkCountX; x++) {
+            for (int y = 0; y < chunkCountY; y++) {
+                for (int z = 0; z < chunkCountZ; z++) {
+                    chunkMap.put(new Vector3i(x, y, z), chunks[x][y][z]);
+                }
+            }
+        }
+        return chunkMap;
+    }
+
+    /**
+     * Limpa o mundo visualmente (usado antes de carregar um save).
+     */
+    public void clearChunks() {
+        node.detachAllChildren();
+    }
+
+    /**
+     * Restaura os dados de um chunk a partir do ficheiro de save.
+     */
+    public void restoreChunk(int x, int y, int z, byte[] data) {
+        if (x >= 0 && x < chunkCountX && y >= 0 && y < chunkCountY && z >= 0 && z < chunkCountZ) {
+            Chunk chunk = chunks[x][y][z];
+            chunk.setData(data);
+            chunk.markDirty();
+        }
+    }
+
+    /**
+     * Força a reconstrução de todos os modelos 3D (chamado após o Load terminar).
+     */
+    public void reloadAllMeshes() {
+        buildMeshes();
     }
 }

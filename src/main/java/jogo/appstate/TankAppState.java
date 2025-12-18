@@ -41,36 +41,44 @@ public class TankAppState extends BaseAppState {
         if (tank.getHealth() <= 0) {
             if (tankControl != null) {
                 System.out.println("O TANK morreu!");
+                // Remove a física
                 physicsSpace.remove(tankControl);
                 tankControl = null;
+
+                // Remove do registo
                 registry.remove(tank);
                 jogo.appstate.HudAppState.registarMorteMonstro();
             }
             return;
         }
 
-
+        // se controlo físico for null criamos fisicas
         if (tankControl == null) {
             setupPhysics();
             return;
         }
 
-
+        // Movimento de seguir o player
         Player player = playerAppState.getPlayer();
         if (player == null) return;
-
+        // posiçao do player
         Vector3f playerPos = new Vector3f(player.getPosition().x, player.getPosition().y, player.getPosition().z);
+        // posiçao do tank
         Vector3f tankPos = tankControl.getRigidBody().getPhysicsLocation();
 
+        //calcula a distância entre o player e o enemigo
         Vector3f direction = playerPos.subtract(tankPos);
+        // tranforma em float
         float distance = direction.length();
 
        //MOVIMENTO
         if (distance > 2.0f) {
             direction.y = 0;
+            // speed npc
             Vector3f walkDir = direction.normalize().mult(tank.getSpeed());
-
+            // Aplica o movimento ao corpo físico
             tankControl.setWalkDirection(walkDir);
+            // faz o player olhar para onde esta a olhar
             tankControl.setViewDirection(walkDir);
 
         } else {
@@ -80,8 +88,8 @@ public class TankAppState extends BaseAppState {
 
         tank.setPosition(tankPos.x, tankPos.y, tankPos.z);
 
-        // --- ATAQUE ---
-        if (distance < 2.5f) {
+        // ATAQUE
+            if (distance < 2.5f) {
             attackTimer += tpf;
             if (attackTimer >= 2.0f) {
                 int currentHealth = player.getHealth();
@@ -92,28 +100,30 @@ public class TankAppState extends BaseAppState {
         } else {
             attackTimer = 0f;
         }
-    }
+    }   // GIGANTE NAO SALTA POR SER PESADO
 
     private void setupPhysics() {
+        // Procura o Spatial que o RenderAppState para este inimigo
         Node gameObjectsNode = (Node) rootNode.getChild("GameObjects");
         if (gameObjectsNode != null) {
+            // procura o modelo 3D que tem o mesmo nome que o nosso inimigo
             Spatial tankSpatial = gameObjectsNode.getChild(tank.getName());
+            // Verifica se encontrámos o modelo e se ele ainda não tem física
             if (tankSpatial != null && tankSpatial.getControl(BetterCharacterControl.class) == null) {
+                    // Configuração Gigante
+                    tankControl = new BetterCharacterControl(0.7f, 2.5f, 200f);
+                    tankControl.setGravity(new Vector3f(0, -20f, 0));
 
-                // Configuração Gigante
-                tankControl = new BetterCharacterControl(0.7f, 2.5f, 200f);
-                tankControl.setGravity(new Vector3f(0, -20f, 0));
-
-                tankControl.warp(new Vector3f(tank.getPosition().x, tank.getPosition().y, tank.getPosition().z));
-
-                tankSpatial.addControl(tankControl);
-                physicsSpace.add(tankControl);
+                    tankControl.warp(new Vector3f(tank.getPosition().x, tank.getPosition().y, tank.getPosition().z));
+                    // se a fisica andar o 3d tmb anda
+                    tankSpatial.addControl(tankControl);
+                    physicsSpace.add(tankControl);
             }
         }
     }
 
 
-    public void warpToPosition() {
+    public void warpToPosition() { // USADO QUANDO DAMOS LOAD AO JOGO
         if (tank != null && tankControl != null) {
             tankControl.warp(new Vector3f(tank.getPosition().x, tank.getPosition().y, tank.getPosition().z));
         }

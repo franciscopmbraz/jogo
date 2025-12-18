@@ -16,7 +16,6 @@ public class Craft {
                     }
             ),
 
-            // Exemplo 2: 2 "Planks" -> 4 "Stick"
             new Recipe(
                     "pau", 4,
                     new Recipe.Ingredient[] {
@@ -53,7 +52,9 @@ public class Craft {
 
     public static boolean canCraft(Inventory inv, Recipe recipe) {
         for (Recipe.Ingredient ing : recipe.getIngredients()) {
+            // verifica os ingredientes da receitas
             if (!inv.hasItem(ing.getItemName(), ing.getAmount())) {
+                //Se o inventário NÃO tiver este item retorna falso
                 return false;
             }
         }
@@ -61,9 +62,10 @@ public class Craft {
     }
 
     public static boolean craft(Inventory inv, Recipe recipe) {
-        if (!canCraft(inv, recipe)) return false;
+        if (!canCraft(inv, recipe)) return false;  //  verifica se é possivel craftar
 
         for (Recipe.Ingredient ing : recipe.getIngredients()) {
+            //remove os itens
             if (!inv.removeItem(ing.getItemName(), ing.getAmount())) {
                 return false;
             }
@@ -71,7 +73,7 @@ public class Craft {
 
         Item resultItem;
         String name = recipe.getResultName();
-
+        // diferentes casos de craftar
         if (name.equals("troncop")) {
             resultItem = new BlockItem("troncop", VoxelPalette.WOODPLANK_ID);
         } else if (name.equals("picaretap")) {
@@ -80,11 +82,11 @@ public class Craft {
             resultItem = new PickaxeItemWood();
         } else if (name.equals("espadap")) {
             resultItem = new SwordItemStone();
-        } else {
+        } else {// caso não seja nem desses cria um simpleitem
             resultItem = new SimpleItem(name);
         }
 
-        Inventory.addInventory(resultItem, recipe.getResultAmount());
+        Inventory.addInventory(resultItem, recipe.getResultAmount()); //adiciona o item
         return true;
     }
 }

@@ -71,9 +71,6 @@ public class Jogo extends SimpleApplication {
         registry.add(new jogo.gameobject.character.NpcFazendeiro());
         registry.add(new jogo.gameobject.character.NpcEater());
 
-        DropManagerAppState dropManager = new DropManagerAppState(rootNode, registry, physicsSpace);
-        stateManager.attach(dropManager);
-
 
         // Post-processing: SSAO for subtle contact shadows
         try {
@@ -95,9 +92,8 @@ public class Jogo extends SimpleApplication {
         stateManager.attach(new CraftingAppState());
         // ataques a inimigos
         stateManager.attach(new CombatAppState(rootNode, cam, input, renderIndex));
-        if (jogo.engine.GameSaver.loadGame(player.getPlayer(), registry, world.getVoxelWorld())) {
+        if (jogo.engine.GameSaver.loadGame(player.getPlayer(), registry)) {
             player.warpToPlayerPosition();
-            world.getVoxelWorld().reloadAllMeshes(); // Atualizar o visual do mundo
             System.out.println("Save carregado automaticamente!");
         }
     }

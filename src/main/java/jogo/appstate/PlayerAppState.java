@@ -212,8 +212,6 @@ public class PlayerAppState extends BaseAppState {
         cam.setLocation(loc);
         cam.setRotation(new com.jme3.math.Quaternion().fromAngles(pitch, yaw, 0f));
     }
-
-
     public void dropItemInHand() {
         Inventory inv = Inventory.getInventory();
 
@@ -225,7 +223,6 @@ public class PlayerAppState extends BaseAppState {
             Item itemObj = stack.getItem();
 
             stack.remove(1);
-
             Vector3f playerPos = cam.getLocation();
             Vector3f playerDir = cam.getDirection();
             Vector3f spawnPos = playerPos.add(playerDir.mult(1.5f)); // 1.5 metros à frente

@@ -8,7 +8,6 @@ import com.jme3.input.controls.*;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import jogo.engine.GameRegistry;
-import jogo.engine.GameSaver;
 import jogo.gameobject.character.Player;
 
 public class InputAppState extends BaseAppState implements ActionListener, AnalogListener {
@@ -57,8 +56,7 @@ public class InputAppState extends BaseAppState implements ActionListener, Analo
         // Interact (E)
         im.addMapping("Interact", new KeyTrigger(KeyInput.KEY_E));
 
-        // --- SAVE / LOAD ---
-        im.addMapping("SaveGame", new KeyTrigger(KeyInput.KEY_K));
+        im.addMapping("SaveGame", new KeyTrigger(KeyInput.KEY_L));
         im.addMapping("LoadGame", new KeyTrigger(KeyInput.KEY_P));
         im.addMapping("DropItem", new KeyTrigger(KeyInput.KEY_G));
 
@@ -157,31 +155,32 @@ public class InputAppState extends BaseAppState implements ActionListener, Analo
             case "SaveGame" -> {
                 if (isPressed) {
                     PlayerAppState pas = getApplication().getStateManager().getState(PlayerAppState.class);
-                    WorldAppState was = getApplication().getStateManager().getState(WorldAppState.class);
-
-                    if (pas != null && pas.getPlayer() != null && was != null) {
-                        // Passamos Player, Registry E O MUNDO (was.getVoxelWorld())
-                        GameSaver.saveGame(pas.getPlayer(), registry, was.getVoxelWorld());
-                        HudAppState.mostrarMensagem("Jogo Guardado com Sucesso!");
+                    if (pas != null && pas.getPlayer() != null) {
+                        // Chama o GameSaver passando o Player e o Registry (NPCs)
+                        jogo.engine.GameSaver.saveGame(pas.getPlayer(), registry);
+                        jogo.appstate.HudAppState.mostrarMensagem("Jogo Guardado");
                     }
                 }
             }
             case "LoadGame" -> {
                 if (isPressed) {
                     PlayerAppState pas = getApplication().getStateManager().getState(PlayerAppState.class);
-                    WorldAppState was = getApplication().getStateManager().getState(WorldAppState.class);
-
-                    if (pas != null && pas.getPlayer() != null && was != null) {
-                        boolean sucesso = GameSaver.loadGame(pas.getPlayer(), registry, was.getVoxelWorld());
+                    if (pas != null && pas.getPlayer() != null) {
+                        boolean sucesso = jogo.engine.GameSaver.loadGame(pas.getPlayer(), registry);
                         if (sucesso) {
-                            pas.warpToPlayerPosition(); // Atualiza física do jogador
+                            pas.warpToPlayerPosition(); // Atualiza a física
+                            // atualiza Enemy
+                            jogo.appstate.EnemyAppState enemyState = getApplication().getStateManager().getState(jogo.appstate.EnemyAppState.class);
+                            if (enemyState != null) {
+                                enemyState.warpToPosition();
+                            }
 
-                            // Forçar atualização visual do mundo
-                            was.getVoxelWorld().reloadAllMeshes();
-
-                            HudAppState.mostrarMensagem("Jogo Carregado!");
-                        } else {
-                            HudAppState.mostrarMensagem("Erro ao Carregar!");
+                            // Atualiza Tank
+                            jogo.appstate.TankAppState tankState = getApplication().getStateManager().getState(jogo.appstate.TankAppState.class);
+                            if (tankState != null) {
+                                tankState.warpToPosition();
+                            }
+                            jogo.appstate.HudAppState.mostrarMensagem("Jogo Carregado");
                         }
                     }
                 }

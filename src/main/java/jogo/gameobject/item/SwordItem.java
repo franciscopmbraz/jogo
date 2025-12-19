@@ -1,5 +1,7 @@
 package jogo.gameobject.item;
 
+import jogo.craft.Recipe;
+
 public abstract class SwordItem extends Item {
 
     private final int damage;
@@ -11,5 +13,9 @@ public abstract class SwordItem extends Item {
 
     public int getDamage() {
         return damage;
+    }
+
+    public Recipe getRecipe() {
+        return null;
     }
 }

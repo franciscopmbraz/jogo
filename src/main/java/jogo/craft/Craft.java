@@ -3,58 +3,47 @@ package jogo.craft;
 import jogo.gameobject.item.*;
 import jogo.voxel.VoxelPalette;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Craft {
 
-    // TODAS AS RECEITAS DO JOGO
-    private static final Recipe[] RECIPES = new Recipe[] {
+    private static final List<Recipe> RECIPES = new ArrayList<>();
+
+    // O Registo das receitas
+    static {
+        // Registar itens que já têm classe própria (extrai a receita deles)
+        registerItemRecipe(new PickaxeItemStone());
+        registerItemRecipe(new PickaxeItemWood());
+        registerItemRecipe(new SwordItemStone());
+        registerItemRecipe(new StickItem());
+
+        // CORREÇÃO AQUI:
+        // Como isto é uma receita manual (sem classe Item), adicionamos diretamente à lista:
+        RECIPES.add(new Recipe(
+                "troncop", 4,
+                new Recipe.Ingredient[] {
+                        new Recipe.Ingredient("tronco", 1)
+                }
+        ));
+    }
 
 
-            new Recipe(
-                    "troncop", 4,
-                    new Recipe.Ingredient[] {
-                            new Recipe.Ingredient("tronco", 1)
-                    }
-            ),
+    // Este método extrai a receita do item e guarda-a na lista
+    public static void registerItemRecipe(Item item) {
+        Recipe recipe = item.getRecipe();
+        if (recipe != null) {
+            RECIPES.add(recipe);
+        }
+    }
 
-            new Recipe(
-                    "pau", 4,
-                    new Recipe.Ingredient[] {
-                            new Recipe.Ingredient("troncop", 2)
-                    }
-            ),
-            new Recipe(
-                    "picaretap", 1,
-                    new Recipe.Ingredient[] {
-                            new Recipe.Ingredient("pedra", 3),
-                            new Recipe.Ingredient("pau", 2)
-                    }
-            ),
-            new Recipe(
-                    "picaretam", 1,
-                    new Recipe.Ingredient[] {
-                            new Recipe.Ingredient("troncop", 3),
-                            new Recipe.Ingredient("pau", 2)
-                    }
-            ),
-            new Recipe(
-                    "espadap",1,
-                    new Recipe.Ingredient[]{
-                            new Recipe.Ingredient("pau",1),
-                            new Recipe.Ingredient("pedra",2)
-                    }
-            )
-
-    };
-
-    public static Recipe[] getRecipes() {
+    public static List<Recipe> getRecipes() {
         return RECIPES;
     }
 
     public static boolean canCraft(Inventory inv, Recipe recipe) {
         for (Recipe.Ingredient ing : recipe.getIngredients()) {
-            // verifica os ingredientes da receitas
             if (!inv.hasItem(ing.getItemName(), ing.getAmount())) {
-                //Se o inventário NÃO tiver este item retorna falso
                 return false;
             }
         }
@@ -62,31 +51,28 @@ public class Craft {
     }
 
     public static boolean craft(Inventory inv, Recipe recipe) {
-        if (!canCraft(inv, recipe)) return false;  //  verifica se é possivel craftar
+        if (!canCraft(inv, recipe)) return false;
 
+        // Consumir os ingredientes
         for (Recipe.Ingredient ing : recipe.getIngredients()) {
-            //remove os itens
             if (!inv.removeItem(ing.getItemName(), ing.getAmount())) {
                 return false;
             }
         }
 
+        // Criar o item resultante
         Item resultItem;
         String name = recipe.getResultName();
-        // diferentes casos de craftar
-        if (name.equals("troncop")) {
-            resultItem = new BlockItem("troncop", VoxelPalette.WOODPLANK_ID);
-        } else if (name.equals("picaretap")) {
-            resultItem = new PickaxeItemStone();
-        } else if (name.equals("picaretam")) {
-            resultItem = new PickaxeItemWood();
-        } else if (name.equals("espadap")) {
-            resultItem = new SwordItemStone();
-        } else {// caso não seja nem desses cria um simpleitem
-            resultItem = new SimpleItem(name);
-        }
 
-        Inventory.addInventory(resultItem, recipe.getResultAmount()); //adiciona o item
+        if (name.equals("picaretap")) resultItem = new PickaxeItemStone();
+        else if (name.equals("picaretam")) resultItem = new PickaxeItemWood();
+        else if (name.equals("espadap")) resultItem = new SwordItemStone();
+        else if (name.equals("pau")) resultItem = new StickItem();
+            // O "troncop" vai cair aqui, criando um item simples. Está perfeito.
+        else if (name.equals("troncop")) resultItem = new BlockItem("troncop", VoxelPalette.WOODPLANK_ID);
+        else resultItem = new SimpleItem(name);
+
+        Inventory.addInventory(resultItem, recipe.getResultAmount());
         return true;
     }
 }

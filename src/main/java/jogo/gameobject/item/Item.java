@@ -1,5 +1,6 @@
 package jogo.gameobject.item;
 
+import jogo.craft.Recipe;
 import jogo.gameobject.GameObject;
 
 public abstract class Item extends GameObject {
@@ -19,5 +20,8 @@ public abstract class Item extends GameObject {
 
     public int getAmount() {
         return amount;
+    }
+    public Recipe getRecipe() {
+        return null;
     }
 }

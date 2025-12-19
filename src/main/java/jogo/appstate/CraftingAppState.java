@@ -18,6 +18,7 @@ import com.jme3.scene.Node;
 import jogo.craft.Craft;
 import jogo.craft.Recipe;
 import jogo.gameobject.item.Inventory;
+import java.util.List;
 
 public class CraftingAppState extends BaseAppState implements ActionListener {
 
@@ -31,7 +32,7 @@ public class CraftingAppState extends BaseAppState implements ActionListener {
     private BitmapText title;
     private BitmapText help;
 
-    private Recipe[] recipes; // Lista de todas as receitas
+    private List<Recipe> recipes; // Lista de todas as receitas
     private BitmapText[] recipeTexts;  // Textos visuais de cada receita
 
     // zonas clicáveis
@@ -59,13 +60,15 @@ public class CraftingAppState extends BaseAppState implements ActionListener {
         help.setText("C: fechar | TAB: rato | Clique: craftar");
 
         // preparar os arrays para os botões e textos
-        recipeTexts = new BitmapText[recipes.length];
-        btnX = new int[recipes.length];
-        btnY = new int[recipes.length];
-        btnW = new int[recipes.length];
-        btnH = new int[recipes.length];
+        int totalRecipes = recipes.size();
 
-        for (int i = 0; i < recipes.length; i++) {
+        recipeTexts = new BitmapText[totalRecipes];
+        btnX = new int[totalRecipes];
+        btnY = new int[totalRecipes];
+        btnW = new int[totalRecipes];
+        btnH = new int[totalRecipes];
+
+        for (int i = 0; i < totalRecipes; i++) {
             recipeTexts[i] = new BitmapText(guiFont);
         }
 
@@ -128,7 +131,7 @@ public class CraftingAppState extends BaseAppState implements ActionListener {
         int baseX = 60;
         int width = screenW / 2;
 
-        for (int i = 0; i < recipes.length; i++) {
+        for (int i = 0; i < recipes.size(); i++) {
             int y = startY - i * spacing;  //aqui o espaçamento
 
             // Posiciona o texto
@@ -145,8 +148,8 @@ public class CraftingAppState extends BaseAppState implements ActionListener {
     private void refreshTexts() {
         Inventory inv = Inventory.getInventory(); // ve o inventário
 
-        for (int i = 0; i < recipes.length; i++) {
-            Recipe r = recipes[i];
+        for (int i = 0; i < recipes.size(); i++) {
+            Recipe r = recipes.get(i);
             // Pergunta à lógica se é possível craftar
             boolean can = Craft.canCraft(inv, r);
 
@@ -175,7 +178,7 @@ public class CraftingAppState extends BaseAppState implements ActionListener {
         Vector2f cursor = inputManager.getCursorPosition();
         float mx = cursor.x, my = cursor.y;
 
-        for (int i = 0; i < recipes.length; i++) {
+        for (int i = 0; i < recipes.size(); i++) {
             // Verifica se o rato está dentro do retângulo do botão i
             int x = btnX[i];
             int y = btnY[i];
@@ -192,7 +195,7 @@ public class CraftingAppState extends BaseAppState implements ActionListener {
 
     private void tryCraft(int index) {
         Inventory inv = Inventory.getInventory();
-        Recipe r = recipes[index];
+        Recipe r = recipes.get(index);
         // Tenta executar o craft (remover ingredientes, adicionar produto)
         if (Craft.craft(inv, r)) {
             System.out.println("Crafted: " + r.getResultName());

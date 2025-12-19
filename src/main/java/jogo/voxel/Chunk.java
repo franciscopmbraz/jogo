@@ -144,37 +144,4 @@ public class Chunk {
         byte id = vox[lx][ly][lz];
         return id != VoxelPalette.AIR_ID && palette.get(id).isSolid();
     }
-    public byte[] getData() {
-        byte[] data = new byte[SIZE * SIZE * SIZE];
-        int index = 0;
-        for (int x = 0; x < SIZE; x++) {
-            for (int y = 0; y < SIZE; y++) {
-                for (int z = 0; z < SIZE; z++) {
-                    data[index++] = vox[x][y][z];
-                }
-            }
-        }
-        return data;
-    }
-
-    /**
-     * Recebe os dados do ficheiro de save e preenche a matriz 3D.
-     */
-    public void setData(byte[] data) {
-        if (data.length != SIZE * SIZE * SIZE) {
-            System.err.println("Erro: Tamanho de dados do Chunk incorreto!");
-            return;
-        }
-        int index = 0;
-        for (int x = 0; x < SIZE; x++) {
-            for (int y = 0; y < SIZE; y++) {
-                for (int z = 0; z < SIZE; z++) {
-                    vox[x][y][z] = data[index++];
-                }
-            }
-        }
-        markDirty();
-    }
-
-
 }

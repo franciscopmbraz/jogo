@@ -537,40 +537,4 @@ public class VoxelWorld {
             this.z = (int) vec3f.z;
         }
     }
-    public Map<Vector3i, Chunk> getChunks() {
-        Map<Vector3i, Chunk> chunkMap = new HashMap<>();
-        for (int x = 0; x < chunkCountX; x++) {
-            for (int y = 0; y < chunkCountY; y++) {
-                for (int z = 0; z < chunkCountZ; z++) {
-                    chunkMap.put(new Vector3i(x, y, z), chunks[x][y][z]);
-                }
-            }
-        }
-        return chunkMap;
-    }
-
-    /**
-     * Limpa o mundo visualmente (usado antes de carregar um save).
-     */
-    public void clearChunks() {
-        node.detachAllChildren();
-    }
-
-    /**
-     * Restaura os dados de um chunk a partir do ficheiro de save.
-     */
-    public void restoreChunk(int x, int y, int z, byte[] data) {
-        if (x >= 0 && x < chunkCountX && y >= 0 && y < chunkCountY && z >= 0 && z < chunkCountZ) {
-            Chunk chunk = chunks[x][y][z];
-            chunk.setData(data);
-            chunk.markDirty();
-        }
-    }
-
-    /**
-     * Força a reconstrução de todos os modelos 3D (chamado após o Load terminar).
-     */
-    public void reloadAllMeshes() {
-        buildMeshes();
-    }
 }

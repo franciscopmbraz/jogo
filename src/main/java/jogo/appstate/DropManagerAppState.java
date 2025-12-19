@@ -32,6 +32,11 @@ public class DropManagerAppState extends BaseAppState {
 
     @Override
     protected void cleanup(Application app) {
+        // Limpar tudo ao sair
+        for (DroppedItem item : items.keySet()) {
+            Spatial s = findSpatial(item);
+            if (s != null) s.removeFromParent();
+        }
         for (RigidBodyControl rb : items.values()) {
             physicsSpace.remove(rb);
         }
@@ -50,14 +55,17 @@ public class DropManagerAppState extends BaseAppState {
             if (obj instanceof DroppedItem) {
                 DroppedItem dropped = (DroppedItem) obj;
 
+                // Se já foi apanhado, remove tudo
                 if (dropped.isCollected()) {
                     removeItem(dropped);
                     continue;
                 }
 
+                // Se ainda não tem física, tenta adicionar
                 if (!items.containsKey(dropped)) {
                     setupPhysics(dropped);
                 } else {
+                    // Sincroniza a posição da Física -> Lógica do Jogo
                     RigidBodyControl rb = items.get(dropped);
                     Vector3f loc = rb.getPhysicsLocation();
                     dropped.setPosition(loc.x, loc.y, loc.z);
@@ -65,33 +73,57 @@ public class DropManagerAppState extends BaseAppState {
             }
         }
 
+        // Remove da lista local se já não existir no Registry
         items.keySet().removeIf(d -> !registry.getAll().contains(d));
     }
 
-    private void setupPhysics(DroppedItem item) {
+    // --- CORREÇÃO 1: Método auxiliar para encontrar o visual onde quer que esteja ---
+    private Spatial findSpatial(DroppedItem item) {
+        // Tenta encontrar dentro de "GameObjects" (caso uses essa organização)
         Node gameObjectsNode = (Node) rootNode.getChild("GameObjects");
         if (gameObjectsNode != null) {
-            Spatial spatial = gameObjectsNode.getChild(item.getName());
-            if (spatial != null && spatial.getControl(RigidBodyControl.class) == null) {
+            Spatial s = gameObjectsNode.getChild(item.getName());
+            if (s != null) return s;
+        }
 
-                RigidBodyControl rb = new RigidBodyControl(1.0f);
-                spatial.addControl(rb);
-                physicsSpace.add(rb);
+        // Se não encontrar, procura diretamente na raiz (rootNode)
+        return rootNode.getChild(item.getName());
+    }
 
-                rb.setPhysicsLocation(new Vector3f(item.getPosition().x, item.getPosition().y, item.getPosition().z));
+    private void setupPhysics(DroppedItem item) {
+        // Usamos o método auxiliar para garantir que encontramos o objeto
+        Spatial spatial = findSpatial(item);
 
-                items.put(item, rb);
-                item.setPhysicsControl(rb);
-            }
+        // Só adiciona física se encontrou o visual e ainda não tem controlo
+        if (spatial != null && spatial.getControl(RigidBodyControl.class) == null) {
+
+            RigidBodyControl rb = new RigidBodyControl(1.0f); // Massa 1.0 = tem gravidade
+            spatial.addControl(rb);
+            physicsSpace.add(rb);
+
+            // Coloca o corpo físico na posição inicial do item
+            rb.setPhysicsLocation(new Vector3f(item.getPosition().x, item.getPosition().y, item.getPosition().z));
+
+            items.put(item, rb);
+            item.setPhysicsControl(rb);
         }
     }
 
     private void removeItem(DroppedItem item) {
+        // 1. Remover Física
         if (items.containsKey(item)) {
             RigidBodyControl rb = items.get(item);
             physicsSpace.remove(rb);
             items.remove(item);
         }
+
+        // --- CORREÇÃO 2: Remover o Visual da Cena ---
+        Spatial spatial = findSpatial(item);
+        if (spatial != null) {
+            spatial.removeFromParent(); // << ISTO FAZ O ITEM DESAPARECER VISUALMENTE
+        }
+
+        // 3. Remover da Lógica (Registry)
         registry.remove(item);
     }
 }

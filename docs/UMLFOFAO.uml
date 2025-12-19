@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>/Users/franciscobraz/Downloads/DSA_Jogo_2025_FranciscoBraz_130774/src</OriginalElement>
+  <nodes>
+    <node x="1608.0" y="746.0">jogo.appstate.CraftingAppState</node>
+    <node x="1176.5" y="246.0">jogo.gameobject.character.Character</node>
+    <node x="991.0" y="186.0">jogo.voxel.VoxelWorld</node>
+    <node x="-108.0" y="926.0">jogo.voxel.blocks.WoodPlankType</node>
+    <node x="1329.5" y="866.0">jogo.voxel.blocks.BarrierType</node>
+    <node x="1705.5" y="606.0">jogo.gameobject.item.CenouraItem</node>
+    <node x="621.0" y="366.0">jogo.gameobject.character.Ally</node>
+    <node x="847.0" y="366.0">jogo.voxel.MeshBuilder</node>
+    <node x="898.5" y="246.0">jogo.gameobject.item.Inventory</node>
+    <node x="260.5" y="866.0">jogo.voxel.blocks.DirtBlockType</node>
+    <node x="1405.5" y="606.0">jogo.gameobject.item.PickaxeItemWood</node>
+    <node x="980.0" y="606.0">jogo.gameobject.character.ZombieEnemy</node>
+    <node x="1612.0" y="426.0">jogo.gameobject.item.SimpleItem</node>
+    <node x="-13.0" y="66.0">jogo.gameobject.GameObject</node>
+    <node x="828.5" y="186.0">jogo.craft.Recipe</node>
+    <node x="890.0" y="546.0">jogo.gameobject.character.TankEnemy</node>
+    <node x="1278.0" y="186.0">jogo.gameobject.item.Item</node>
+    <node x="1180.0" y="606.0">jogo.appstate.TankAppState</node>
+    <node x="-109.5" y="246.0">jogo.engine.GameSaver</node>
+    <node x="-15.5" y="366.0">jogo.gameobject.item.DroppedItem</node>
+    <node x="-114.0" y="426.0">jogo.engine.RenderIndex</node>
+    <node x="1376.5" y="746.0">jogo.appstate.WorldAppState</node>
+    <node x="755.0" y="246.0">jogo.framework.math.Vec3</node>
+    <node x="1208.0" y="366.0">jogo.gameobject.item.PickaxeItem</node>
+    <node x="1124.0" y="546.0">jogo.util.Hit</node>
+    <node x="1285.5" y="546.0">jogo.gameobject.item.PickaxeItemStone</node>
+    <node x="1131.0" y="426.0">jogo.gameobject.character.Player</node>
+    <node x="1248.5" y="686.0">jogo.appstate.CombatAppState</node>
+    <node x="132.0" y="926.0">jogo.voxel.blocks.StoneBlockType</node>
+    <node x="695.5" y="186.0">jogo.craft.Craft</node>
+    <node x="1461.5" y="926.0">jogo.voxel.blocks.BedRockType</node>
+    <node x="1135.0" y="746.0">jogo.appstate.PlayerAppState</node>
+    <node x="283.0" y="426.0">jogo.util.ProcTextures</node>
+    <node x="299.0" y="606.0">jogo.gameobject.character.NpcEater</node>
+    <node x="369.0" y="926.0">jogo.voxel.blocks.GrasstBlockType</node>
+    <node x="1486.5" y="686.0">jogo.voxel.UnbreakableType</node>
+    <node x="782.0" y="606.0">jogo.voxel.FastNoiseLite</node>
+    <node x="732.0" y="866.0">jogo.voxel.blocks.WoodBlockType</node>
+    <node x="969.0" y="426.0">jogo.gameobject.character.Enemy</node>
+    <node x="1011.0" y="686.0">jogo.interaction.WorldInteraction</node>
+    <node x="846.5" y="746.0">jogo.appstate.DropManagerAppState</node>
+    <node x="141.0" y="546.0">jogo.engine.GameRegistry</node>
+    <node x="39.5" y="606.0">jogo.appstate.InputAppState</node>
+    <node x="607.0" y="926.0">jogo.voxel.blocks.LeavesBlockType</node>
+    <node x="-112.5" y="-19.0">jogo.Jogo</node>
+    <node x="731.5" y="686.0">jogo.appstate.RenderAppState</node>
+    <node x="743.0" y="426.0">jogo.appstate.HudAppState</node>
+    <node x="10.0" y="866.0">jogo.voxel.blocks.CarrotBlockType</node>
+    <node x="1797.0" y="426.0">jogo.gameobject.item.BlockItem</node>
+    <node x="864.0" y="926.0">jogo.voxel.blocks.AirBlockType</node>
+    <node x="569.0" y="246.0">jogo.interaction.Interactable</node>
+    <node x="1609.5" y="866.0">jogo.voxel.blocks.SpeedBlockType</node>
+    <node x="1413.0" y="426.0">jogo.gameobject.item.SwordItem</node>
+    <node x="86.5" y="426.0">jogo.voxel.VoxelPalette</node>
+    <node x="1530.5" y="546.0">jogo.gameobject.item.SwordItemStone</node>
+    <node x="613.0" y="746.0">jogo.appstate.EnemyAppState</node>
+    <node x="490.0" y="186.0">jogo.voxel.Chunk</node>
+    <node x="416.5" y="546.0">jogo.gameobject.character.NpcFazendeiro</node>
+    <node x="488.5" y="426.0">jogo.gameobject.item.ItemFactory</node>
+    <node x="357.5" y="746.0">jogo.appstate.InteractionAppState</node>
+    <node x="493.5" y="866.0">jogo.voxel.blocks.TilledBlockType</node>
+    <node x="493.0" y="686.0">jogo.voxel.VoxelBlockType</node>
+    <node x="396.0" y="246.0">jogo.gameobject.item.ItemStack</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="jogo.gameobject.character.NpcEater" target="jogo.interaction.Interactable" relationship="REALIZATION">
+      <point x="-30.5" y="-14.0" />
+      <point x="329.5" y="520.0" />
+      <point x="260.0" y="520.0" />
+      <point x="260.0" y="340.0" />
+      <point x="640.0" y="340.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="jogo.voxel.blocks.SpeedBlockType" target="jogo.voxel.VoxelBlockType" relationship="GENERALIZATION">
+      <point x="-45.25" y="-14.0" />
+      <point x="1654.75" y="840.0" />
+      <point x="580.0" y="840.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="jogo.gameobject.item.SimpleItem" target="jogo.gameobject.item.Item" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1680.0" y="320.0" />
+      <point x="1380.0" y="320.0" />
+      <point x="1380.0" y="160.0" />
+      <point x="1320.0" y="160.0" />
+      <point x="0.0" y="-14.0" />
+    </edge>
+    <edge source="jogo.voxel.blocks.AirBlockType" target="jogo.voxel.VoxelBlockType" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="940.0" y="840.0" />
+      <point x="580.0" y="840.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="jogo.gameobject.item.CenouraItem" target="jogo.gameobject.item.SimpleItem" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1780.0" y="400.0" />
+      <point x="1680.0" y="400.0" />
+      <point x="0.0" y="-14.0" />
+    </edge>
+    <edge source="jogo.gameobject.character.NpcFazendeiro" target="jogo.interaction.Interactable" relationship="REALIZATION">
+      <point x="-41.75" y="-14.0" />
+      <point x="458.25" y="500.0" />
+      <point x="460.0" y="500.0" />
+      <point x="460.0" y="340.0" />
+      <point x="640.0" y="340.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="jogo.voxel.blocks.DirtBlockType" target="jogo.voxel.VoxelBlockType" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="340.0" y="840.0" />
+      <point x="580.0" y="840.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="jogo.voxel.blocks.WoodBlockType" target="jogo.voxel.VoxelBlockType" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="820.0" y="840.0" />
+      <point x="580.0" y="840.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="jogo.gameobject.item.DroppedItem" target="jogo.gameobject.GameObject" relationship="GENERALIZATION">
+      <point x="-37.75" y="-14.0" />
+      <point x="22.25" y="340.0" />
+      <point x="60.0" y="340.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="jogo.voxel.blocks.BarrierType" target="jogo.voxel.VoxelBlockType" relationship="GENERALIZATION">
+      <point x="-35.25" y="-14.0" />
+      <point x="1364.75" y="840.0" />
+      <point x="580.0" y="840.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="jogo.voxel.blocks.BedRockType" target="jogo.voxel.UnbreakableType" relationship="REALIZATION">
+      <point x="39.25" y="-14.0" />
+      <point x="1579.25" y="820.0" />
+      <point x="1580.0" y="820.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="jogo.voxel.blocks.BedRockType" target="jogo.voxel.VoxelBlockType" relationship="GENERALIZATION">
+      <point x="-39.25" y="-14.0" />
+      <point x="1500.75" y="840.0" />
+      <point x="580.0" y="840.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="jogo.gameobject.item.BlockItem" target="jogo.gameobject.item.Item" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1860.0" y="320.0" />
+      <point x="1380.0" y="320.0" />
+      <point x="1380.0" y="160.0" />
+      <point x="1320.0" y="160.0" />
+      <point x="0.0" y="-14.0" />
+    </edge>
+    <edge source="jogo.gameobject.character.Ally" target="jogo.gameobject.character.Character" relationship="GENERALIZATION">
+      <point x="19.5" y="-14.0" />
+      <point x="679.5" y="320.0" />
+      <point x="1160.0" y="320.0" />
+      <point x="1160.0" y="220.0" />
+      <point x="1240.0" y="220.0" />
+      <point x="0.0" y="-14.0" />
+    </edge>
+    <edge source="jogo.voxel.blocks.GrasstBlockType" target="jogo.voxel.VoxelBlockType" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="460.0" y="840.0" />
+      <point x="580.0" y="840.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="jogo.gameobject.item.SwordItemStone" target="jogo.gameobject.item.SwordItem" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1620.0" y="520.0" />
+      <point x="1580.0" y="520.0" />
+      <point x="1580.0" y="400.0" />
+      <point x="1480.0" y="400.0" />
+      <point x="0.0" y="-14.0" />
+    </edge>
+    <edge source="jogo.gameobject.character.TankEnemy" target="jogo.gameobject.character.Enemy" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="960.0" y="520.0" />
+      <point x="1060.0" y="520.0" />
+      <point x="1060.0" y="480.0" />
+      <point x="1100.0" y="480.0" />
+      <point x="1100.0" y="400.0" />
+      <point x="1020.0" y="400.0" />
+      <point x="0.0" y="-14.0" />
+    </edge>
+    <edge source="jogo.voxel.blocks.TilledBlockType" target="jogo.voxel.VoxelBlockType" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="jogo.voxel.blocks.SpeedBlockType" target="jogo.voxel.UnbreakableType" relationship="REALIZATION">
+      <point x="45.25" y="-14.0" />
+      <point x="1745.25" y="820.0" />
+      <point x="1580.0" y="820.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="jogo.gameobject.character.Enemy" target="jogo.gameobject.character.Character" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1020.0" y="320.0" />
+      <point x="1160.0" y="320.0" />
+      <point x="1160.0" y="220.0" />
+      <point x="1240.0" y="220.0" />
+      <point x="0.0" y="-14.0" />
+    </edge>
+    <edge source="jogo.voxel.blocks.LeavesBlockType" target="jogo.voxel.VoxelBlockType" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="700.0" y="840.0" />
+      <point x="580.0" y="840.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="jogo.voxel.blocks.WoodPlankType" target="jogo.voxel.VoxelBlockType" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="-20.0" y="840.0" />
+      <point x="580.0" y="840.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="jogo.voxel.blocks.StoneBlockType" target="jogo.voxel.VoxelBlockType" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="220.0" y="840.0" />
+      <point x="580.0" y="840.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="jogo.gameobject.character.Character" target="jogo.gameobject.GameObject" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1240.0" y="140.0" />
+      <point x="60.0" y="140.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="jogo.gameobject.item.PickaxeItemStone" target="jogo.gameobject.item.PickaxeItem" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1380.0" y="340.0" />
+      <point x="1280.0" y="340.0" />
+      <point x="0.0" y="-14.0" />
+    </edge>
+    <edge source="jogo.gameobject.character.Player" target="jogo.gameobject.character.Character" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1180.0" y="320.0" />
+      <point x="1160.0" y="320.0" />
+      <point x="1160.0" y="220.0" />
+      <point x="1240.0" y="220.0" />
+      <point x="0.0" y="-14.0" />
+    </edge>
+    <edge source="jogo.gameobject.character.NpcEater" target="jogo.gameobject.character.Ally" relationship="GENERALIZATION">
+      <point x="30.5" y="-14.0" />
+      <point x="390.5" y="520.0" />
+      <point x="540.0" y="520.0" />
+      <point x="540.0" y="480.0" />
+      <point x="720.0" y="480.0" />
+      <point x="720.0" y="340.0" />
+      <point x="679.5" y="340.0" />
+      <point x="19.5" y="-14.0" />
+    </edge>
+    <edge source="jogo.gameobject.item.Item" target="jogo.gameobject.GameObject" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1320.0" y="140.0" />
+      <point x="60.0" y="140.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="jogo.gameobject.character.NpcFazendeiro" target="jogo.gameobject.character.Ally" relationship="GENERALIZATION">
+      <point x="41.75" y="-14.0" />
+      <point x="541.75" y="520.0" />
+      <point x="540.0" y="520.0" />
+      <point x="540.0" y="480.0" />
+      <point x="720.0" y="480.0" />
+      <point x="720.0" y="340.0" />
+      <point x="679.5" y="340.0" />
+      <point x="19.5" y="-14.0" />
+    </edge>
+    <edge source="jogo.voxel.blocks.BarrierType" target="jogo.voxel.UnbreakableType" relationship="REALIZATION">
+      <point x="35.25" y="-14.0" />
+      <point x="1435.25" y="820.0" />
+      <point x="1580.0" y="820.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="jogo.gameobject.character.Ally" target="jogo.interaction.Interactable" relationship="REALIZATION">
+      <point x="-19.5" y="-14.0" />
+      <point x="640.5" y="340.0" />
+      <point x="640.0" y="340.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="jogo.gameobject.item.SwordItem" target="jogo.gameobject.item.Item" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1480.0" y="320.0" />
+      <point x="1380.0" y="320.0" />
+      <point x="1380.0" y="160.0" />
+      <point x="1320.0" y="160.0" />
+      <point x="0.0" y="-14.0" />
+    </edge>
+    <edge source="jogo.gameobject.character.ZombieEnemy" target="jogo.gameobject.character.Enemy" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1060.0" y="480.0" />
+      <point x="1100.0" y="480.0" />
+      <point x="1100.0" y="400.0" />
+      <point x="1020.0" y="400.0" />
+      <point x="0.0" y="-14.0" />
+    </edge>
+    <edge source="jogo.gameobject.item.PickaxeItem" target="jogo.gameobject.item.Item" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1280.0" y="320.0" />
+      <point x="1380.0" y="320.0" />
+      <point x="1380.0" y="160.0" />
+      <point x="1320.0" y="160.0" />
+      <point x="0.0" y="-14.0" />
+    </edge>
+    <edge source="jogo.gameobject.item.PickaxeItemWood" target="jogo.gameobject.item.PickaxeItem" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1500.0" y="520.0" />
+      <point x="1380.0" y="520.0" />
+      <point x="1380.0" y="340.0" />
+      <point x="1280.0" y="340.0" />
+      <point x="0.0" y="-14.0" />
+    </edge>
+    <edge source="jogo.gameobject.item.DroppedItem" target="jogo.interaction.Interactable" relationship="REALIZATION">
+      <point x="37.75" y="-14.0" />
+      <point x="97.75" y="340.0" />
+      <point x="640.0" y="340.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="jogo.voxel.blocks.CarrotBlockType" target="jogo.voxel.VoxelBlockType" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="100.0" y="840.0" />
+      <point x="580.0" y="840.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Compact" zoom="1.0" showDependencies="false" x="1148.0111315718318" y="601.2225711679904" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

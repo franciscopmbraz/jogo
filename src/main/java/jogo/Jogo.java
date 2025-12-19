@@ -90,6 +90,7 @@ public class Jogo extends SimpleApplication {
         stateManager.attach(new HudAppState(guiNode, assetManager));
         // Menu de Crafting (abre com C)
         stateManager.attach(new CraftingAppState());
+        stateManager.attach(new DropManagerAppState(rootNode, registry, physicsSpace));
         // ataques a inimigos
         stateManager.attach(new CombatAppState(rootNode, cam, input, renderIndex));
         if (jogo.engine.GameSaver.loadGame(player.getPlayer(), registry)) {
